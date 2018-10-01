@@ -1,0 +1,11 @@
+.App {
+  color: $blue;
+
+  &:hover {
+    color: $red;
+  }
+
+  @include media-breakpoint-up(md) {
+    background: $gray-100;
+  }
+}

@@ -1,0 +1,8 @@
+// My variables override Bootstrap variables
+@import './variables.scss';
+
+// Bootstrap stuff (variables, mixins, etc) is available in every component
+@import "~bootstrap/scss/bootstrap";
+
+// Put components here
+@import "../components/App/App.scss";
