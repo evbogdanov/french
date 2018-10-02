@@ -1,0 +1,8 @@
+.Header {
+  &__link.active {
+    color: $black;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: default;
+  }
+}
