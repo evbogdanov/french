@@ -4,17 +4,18 @@ import { NavLink } from 'react-router-dom';
 const Header = (props) => {
   return (
     <header className="Header">
-      <ul>
-        <li>
+      <div className="container Header__container">
+        <div className="Header__logo">
+          <div className="Header__logo-blue"></div>
+          <div className="Header__logo-white"></div>
+          <div className="Header__logo-red"></div>
+        </div>
+        <div className="Header__links">
           <NavLink className="Header__link" exact to="/">Phrases</NavLink>
-        </li>
-        <li>
           <NavLink className="Header__link" to="/words">Words</NavLink>
-        </li>
-        <li>
           <NavLink className="Header__link" to="/about">About</NavLink>
-        </li>
-      </ul>
+        </div>
+      </div>
     </header>
   );
 };
