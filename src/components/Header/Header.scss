@@ -34,13 +34,11 @@
 
   &__link {
     display: inline-block;
-    font-size: .95rem;
     height: 3rem;
     line-height: 3rem;
     margin: 0 .75rem;
     position: relative;
     @include media-breakpoint-up(sm) {
-      font-size: 1rem;
       height: 4rem;
       line-height: 4rem;
       margin: 0 1rem;

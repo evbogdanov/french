@@ -1,11 +1,14 @@
 .Card {
   &__header {
-    padding: 3.75rem 1.25rem;
+    background-color: transparent;
     border-bottom: none;
-    text-align: center;
-    font-size: 1.75rem;
-    font-weight: 500;
-    line-height: 1.2;
+    padding-bottom: 0;
+    font-size: 1.25rem;
+  }
+
+  &__header-inner {
+    border-bottom: $card-border-width solid $card-border-color;
+    padding-bottom: $card-spacer-y;
   }
 
   &__time {

@@ -1,8 +1,11 @@
 import React from 'react';
+import Heading from '../Heading/Heading';
 
 const Words = (props) => {
   return (
-    <div>Words</div>
+    <>
+      <Heading>Words</Heading>
+    </>
   );
 };
 

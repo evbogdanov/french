@@ -10,7 +10,9 @@ const Card = (props) => {
   return (
     <div className="card Card">
       <div className="card-header Card__header">
-        {props.header}
+        <div className="Card__header-inner">
+          {props.header}
+        </div>
       </div>
       <div className="card-body">
         {props.body}

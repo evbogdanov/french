@@ -1,5 +1,9 @@
 .Phrases {
-  &__search-form {
+  &__form {
     margin-bottom: 2rem;
+  }
+
+  &__form-control {
+    background-color: $gray-100;
   }
 }

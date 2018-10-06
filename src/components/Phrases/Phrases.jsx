@@ -1,4 +1,5 @@
 import React from 'react';
+import Heading from '../Heading/Heading';
 import PhraseCard from '../PhraseCard/PhraseCard';
 
 const phrase = {
@@ -14,9 +15,9 @@ const phrase = {
 const Phrases = (props) => {
   return (
     <>
-      <h1 className="display-4">Phrases</h1>
-      <div className="Phrases__search-form">
-        <input className="form-control form-control-lg"
+      <Heading>Phrases</Heading>
+      <div className="Phrases__form">
+        <input className="form-control Phrases__form-control"
                type="text"
                placeholder="Search phrases" />
       </div>
