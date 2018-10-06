@@ -1,0 +1,15 @@
+.Card {
+  &__header {
+    padding: 3.75rem 1.25rem;
+    border-bottom: none;
+    text-align: center;
+    font-size: 1.75rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  &__time {
+    color: $text-muted;
+    font-size: .75rem;
+  }
+}
