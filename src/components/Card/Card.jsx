@@ -14,7 +14,7 @@ const Card = (props) => {
           {props.header}
         </div>
       </div>
-      <div className="card-body">
+      <div className="card-body Card__body">
         {props.body}
         <p className="card-text"><small className="text-muted">{props.time}</small></p>
       </div>

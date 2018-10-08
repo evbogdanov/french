@@ -1,9 +1,10 @@
 .Phrases {
   &__form {
-    margin-bottom: 2rem;
+    margin-bottom: ($card-columns-gap / 2 * 3);
   }
 
   &__form-control {
     background-color: $gray-100;
+    padding: $input-padding-y $card-spacer-x;
   }
 }

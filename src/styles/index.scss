@@ -4,8 +4,12 @@
 // Bootstrap stuff (variables, mixins, etc) is available in every component
 @import "~bootstrap/scss/bootstrap";
 
+// Native HTML elements
+@import "./body.scss";
+
 // Put components here
 @import "../components/Heading/Heading.scss";
 @import "../components/Header/Header.scss";
 @import "../components/Phrases/Phrases.scss";
 @import "../components/Card/Card.scss";
+@import "../components/CardColumns/CardColumns.scss";

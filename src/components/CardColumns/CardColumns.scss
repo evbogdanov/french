@@ -1,0 +1,12 @@
+// Overwrite Bootstrap class
+.card-columns {
+  column-count: 1;
+
+  @include media-breakpoint-up(md) {
+    column-count: 2;
+  }
+
+  @include media-breakpoint-up(lg) {
+    column-count: 3;
+  }
+}
