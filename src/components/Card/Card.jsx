@@ -16,7 +16,7 @@ const Card = (props) => {
       </div>
       <div className="card-body">
         {props.body}
-        <p className="card-text Card__time">{props.time}</p>
+        <p className="card-text"><small className="text-muted">{props.time}</small></p>
       </div>
     </div>
   );
