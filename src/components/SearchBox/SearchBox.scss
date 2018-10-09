@@ -4,9 +4,10 @@
   position: relative;
 
   &__form-control {
-    background-color: $gray-100;
+    background-color: $gray-200;
     height: $SearchBox-height;
     padding: $input-padding-y $SearchBox-button-size;
+    border-radius: $SearchBox-height;
   }
 
   &__button {
