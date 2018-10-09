@@ -1,0 +1,44 @@
+.SearchBox {
+  margin-bottom: ($card-columns-gap / 2 * 3);
+  height: $SearchBox-height;
+  position: relative;
+
+  &__form-control {
+    background-color: $gray-100;
+    height: $SearchBox-height;
+    padding: $input-padding-y $SearchBox-button-size;
+  }
+
+  &__button {
+    width: $SearchBox-button-size;
+    height: $SearchBox-button-size;
+    position: absolute;
+    top: $SearchBox-border-size;
+    border: none;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+
+    &-svg {
+      width: $SearchBox-button-svg-size;
+      height: $SearchBox-button-svg-size;
+      position: absolute;
+      top: $SearchBox-button-svg-spacer;
+      left: $SearchBox-button-svg-spacer;
+      fill: $gray-600;
+      transition: fill .1s ease-in-out;
+    }
+  }
+
+  &__search-button {
+    left: $SearchBox-border-size;
+  }
+
+  &__clear-button {
+    right: $SearchBox-border-size;
+    cursor: pointer;
+    &:hover &-svg {
+      fill: $gray-900;
+    }
+  }
+}

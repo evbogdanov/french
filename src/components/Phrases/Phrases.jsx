@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Heading from '../Heading/Heading';
 import CardColumns from '../CardColumns/CardColumns';
 import PhraseCard from '../PhraseCard/PhraseCard';
+import SearchBox from '../SearchBox/SearchBox';
 
 const phrases = [
   {
@@ -46,22 +47,35 @@ const phrases = [
   },
 ];
 
-const Phrases = (props) => {
-  const phraseCards = phrases.map(p => <PhraseCard key={p.id} phrase={p} />);
+class Phrases extends Component {
+  state = {
+    searchQuery: ''
+  }
 
-  return (
-    <>
-      <Heading>Phrases</Heading>
-      <div className="Phrases__form">
-        <input className="form-control Phrases__form-control"
-               type="text"
-               placeholder="Search for a phrase..." />
-      </div>
-      <CardColumns>
-        {phraseCards}
-      </CardColumns>
-    </>
-  );
-};
+  onSearchChange = (event) => {
+    this.setState({searchQuery: event.target.value});
+  }
+
+  onSearchClear = () => {
+    this.setState({searchQuery: ''});
+  }
+
+  render() {
+    const cards = phrases.map(p => <PhraseCard key={p.id} phrase={p} />);
+
+    return (
+      <>
+        <Heading>Phrases</Heading>
+        <SearchBox placeholder="Search phrases"
+                   value={this.state.searchQuery}
+                   onChange={this.onSearchChange}
+                   onClear={this.onSearchClear} />
+        <CardColumns>
+          {cards}
+        </CardColumns>
+      </>
+    );
+  }
+}
 
 export default Phrases;
