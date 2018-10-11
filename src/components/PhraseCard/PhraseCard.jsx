@@ -33,6 +33,7 @@ const PhraseCard = (props) => {
   );
 
   return <Card header={p.text}
+               image={p.image}
                body={body}
                time={p.time} />;
 };

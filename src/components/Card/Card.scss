@@ -10,15 +10,21 @@
     line-height: 1.2;
   }
 
-  &__body {
-    padding: $card-spacer-y $card-spacer-x;
-  }
-
   &__header-inner {
     border-bottom: $card-border-width solid $card-border-color;
     padding-bottom: $card-spacer-y;
   }
 
+  &__body {
+    padding: $card-spacer-y $card-spacer-x;
+  }
+
+  &__image {
+    margin: -$card-spacer-y 0 $card-spacer-y;
+    img {
+      width: 100%;
+    }
+  }
   .card-text:not(:last-child) {
     margin-bottom: $card-spacer-y;
   }

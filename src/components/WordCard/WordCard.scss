@@ -1,0 +1,19 @@
+.WordCard {
+  &_gender_f {
+    color: $feminine;
+    background-color: $feminine-bg;
+    border-color: $feminine-border;
+    .Card__header-inner {
+      border-color: $feminine-border;
+    }
+  }
+
+  &_gender_m {
+    color: $masculine;
+    background-color: $masculine-bg;
+    border-color: $masculine-border;
+    .Card__header-inner {
+      border-color: $masculine-border;
+    }
+  }
+}

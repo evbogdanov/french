@@ -10,13 +10,6 @@ $font-weight-semi-bold:  600;
 
 
 /*******************************************************************************
- *** Card
- ******************************************************************************/
-
-$card-spacer-x: 1rem;
-
-
-/*******************************************************************************
  *** Search box
  ******************************************************************************/
 
@@ -25,3 +18,16 @@ $SearchBox-button-size: 36px;
 $SearchBox-button-svg-size: 16px;
 $SearchBox-button-svg-spacer: 10px;
 $SearchBox-border-size: 1px;
+
+
+/*******************************************************************************
+ *** Gender colors
+ ******************************************************************************/
+
+$masculine: theme-color-level(primary, $alert-color-level);
+$masculine-bg: theme-color-level(primary, $alert-bg-level);
+$masculine-border: theme-color-level(primary, $alert-border-level);
+
+$feminine: theme-color-level(danger, $alert-color-level);
+$feminine-bg: theme-color-level(danger, $alert-bg-level);
+$feminine-border: theme-color-level(danger, $alert-border-level);

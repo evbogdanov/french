@@ -1,8 +1,11 @@
-// My variables override Bootstrap variables
-@import './variables.scss';
+// Customize Bootstrap variables
+@import './bootstrapVariables.scss';
 
 // Bootstrap stuff (variables, mixins, etc) is available in every component
 @import "~bootstrap/scss/bootstrap";
+
+// My own variables (may use Bootstrap variables)
+@import './variables.scss';
 
 // Native HTML elements
 @import "./body.scss";
@@ -12,6 +15,7 @@
 @import "../components/Header/Header.scss";
 @import "../components/Phrases/Phrases.scss";
 @import "../components/Card/Card.scss";
+@import "../components/WordCard/WordCard.scss";
 @import "../components/CardColumns/CardColumns.scss";
 @import "../components/About/About.scss";
 @import "../components/SearchBox/SearchBox.scss";
