@@ -56,6 +56,10 @@ class Words extends Component {
     this.setState({searchQuery: event.target.value});
   }
 
+  onSearchStart = () => {
+    console.log('Search words:', this.state.searchQuery);
+  }
+
   onSearchClear = () => {
     this.setState({searchQuery: ''});
   }
@@ -69,6 +73,7 @@ class Words extends Component {
         <SearchBox placeholder="Search words"
                    value={this.state.searchQuery}
                    onChange={this.onSearchChange}
+                   onSearchStart={this.onSearchStart}
                    onClear={this.onSearchClear} />
         <CardColumns>
           {cards}

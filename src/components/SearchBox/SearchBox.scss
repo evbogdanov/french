@@ -19,6 +19,11 @@
     padding: 0;
     margin: 0;
     background: transparent;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
 
     &-svg {
       width: $SearchBox-button-svg-size;
@@ -29,6 +34,10 @@
       fill: $gray-600;
       transition: fill .1s ease-in-out;
     }
+
+    &:hover &-svg {
+      fill: $gray-900;
+    }
   }
 
   &__search-button {
@@ -37,9 +46,5 @@
 
   &__clear-button {
     right: $SearchBox-border-size;
-    cursor: pointer;
-    &:hover &-svg {
-      fill: $gray-900;
-    }
   }
 }
