@@ -1,60 +1,25 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import Heading from '../Heading/Heading';
 import CardColumns from '../CardColumns/CardColumns';
 import PhraseCard from '../PhraseCard/PhraseCard';
 import SearchBox from '../SearchBox/SearchBox';
 
-const phrases = [
-  {
-    id: 1,
-    text: 'Paroles, paroles',
-    image: '',
-    notes: 'Words, words',
-    related_words: null,
-    days_ago: 0,
-  },
-  {
-    id: 2,
-    text: 'Encore des mots toujours des mots',
-    image: '',
-    notes: 'Still words always words',
-    related_words: null,
-    days_ago: 1,
-  },
-  {
-    id: 3,
-    text: 'T\'es pas tout neuf, mais pas si vieux',
-    image: '',
-    notes: 'You\'re not new, but not so old',
-    related_words: null,
-    days_ago: 2,
-  },
-  {
-    id: 4,
-    text: 'Mes dents sont sensible',
-    image: '',
-    notes: 'My teeth are sensitive',
-    related_words: [
-      'dent',
-    ],
-    days_ago: 3,
-  },
-  {
-    id: 5,
-    text: 'Quelque chose',
-    image: '',
-    notes: 'Something',
-    related_words: [
-      'chose',
-      'quelque',
-    ],
-    days_ago: 4,
-  },
-];
-
 class Phrases extends Component {
   state = {
-    searchQuery: ''
+    searchQuery: '',
+    phrases: [],
+  }
+
+  componentDidMount() {
+    // TODO: put API URL inside a config file
+    axios.get('http://localhost:4000/v1/phrases/search')
+      .then(res => {
+        this.setState({phrases: res.data.data});
+      })
+      .catch(err => {
+        console.log('Error!', err);
+      });
   }
 
   onSearchChange = (event) => {
@@ -70,7 +35,9 @@ class Phrases extends Component {
   }
 
   render() {
-    const cards = phrases.map(p => <PhraseCard key={p.id} phrase={p} />);
+    const cards = this.state.phrases.map(
+      p => <PhraseCard key={p.id} phrase={p} />
+    );
 
     return (
       <>

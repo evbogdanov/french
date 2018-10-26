@@ -1,47 +1,25 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import Heading from '../Heading/Heading';
 import SearchBox from '../SearchBox/SearchBox';
 import CardColumns from '../CardColumns/CardColumns';
 import WordCard from '../WordCard/WordCard';
 
-const words = [
-  {
-    id: 1,
-    text: 'je',
-    image: '',
-    notes: 'I',
-    gender: '',
-    days_ago: 0,
-  },
-  {
-    id: 2,
-    text: 'mère',
-    image: '',
-    notes: 'mother',
-    gender: 'f',
-    days_ago: 1,
-  },
-  {
-    id: 3,
-    text: 'père',
-    image: '',
-    notes: 'father',
-    gender: 'm',
-    days_ago: 2,
-  },
-  {
-    id: 4,
-    text: 'frère',
-    image: '',
-    notes: 'brother',
-    gender: 'm',
-    days_ago: 3,
-  },
-];
-
 class Words extends Component {
   state = {
-    searchQuery: ''
+    searchQuery: '',
+    words:  []
+  }
+
+  componentDidMount() {
+    // TODO: put API URL inside a config file
+    axios.get('http://localhost:4000/v1/words/search')
+      .then(res => {
+        this.setState({words: res.data.data});
+      })
+      .catch(err => {
+        console.log('Error!', err);
+      });
   }
 
   onSearchChange = (event) => {
@@ -57,7 +35,9 @@ class Words extends Component {
   }
 
   render() {
-    const cards = words.map(w => <WordCard key={w.id} word={w} />);
+    const cards = this.state.words.map(
+      w => <WordCard key={w.id} word={w} />
+    );
 
     return (
       <>
