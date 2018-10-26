@@ -22,7 +22,7 @@ const WordCard = (props) => {
                header={w.text}
                image={w.image}
                body={notes}
-               time={w.time} />;
+               days_ago={w.days_ago} />;
 };
 
 export default WordCard;

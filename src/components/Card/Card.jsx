@@ -5,7 +5,7 @@ import React from 'react';
  * - header
  * - image
  * - body
- * - time
+ * - days_ago
  * - extraClassName (optional)
  */
 const Card = (props) => {
@@ -24,6 +24,12 @@ const Card = (props) => {
     );
   }
 
+  // TODO: handle weeks, months, years
+  const daysAgo = props.days_ago;
+  let timeAgo = 'today';
+  if (daysAgo === 1) timeAgo = 'yesterday';
+  if (daysAgo > 1) timeAgo = `${daysAgo} days ago`;
+
   return (
     <div className={className}>
       <div className="card-header Card__header">
@@ -34,7 +40,7 @@ const Card = (props) => {
       <div className="card-body Card__body">
         {image}
         {props.body}
-        <p className="card-text"><small className="text-muted">{props.time}</small></p>
+        <p className="card-text"><small className="text-muted">{timeAgo}</small></p>
       </div>
     </div>
   );

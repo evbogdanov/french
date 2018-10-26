@@ -8,47 +8,47 @@ const phrases = [
   {
     id: 1,
     text: 'Paroles, paroles',
-    image: 'https://ih1.redbubble.net/image.60986887.4517/sticker,375x360-bg,ffffff.u1.png',
+    image: '',
     notes: 'Words, words',
-    relatedWords: [],
-    time: '1 day ago',
+    related_words: null,
+    days_ago: 0,
   },
   {
     id: 2,
     text: 'Encore des mots toujours des mots',
     image: '',
     notes: 'Still words always words',
-    relatedWords: [],
-    time: '1 day ago',
+    related_words: null,
+    days_ago: 1,
   },
   {
     id: 3,
     text: 'T\'es pas tout neuf, mais pas si vieux',
     image: '',
     notes: 'You\'re not new, but not so old',
-    relatedWords: [],
-    time: '1 day ago',
+    related_words: null,
+    days_ago: 2,
   },
   {
     id: 4,
     text: 'Mes dents sont sensible',
     image: '',
     notes: 'My teeth are sensitive',
-    relatedWords: [
-      {id: 1, text: 'dent'},
+    related_words: [
+      'dent',
     ],
-    time: '1 day ago',
+    days_ago: 3,
   },
   {
     id: 5,
     text: 'Quelque chose',
     image: '',
     notes: 'Something',
-    relatedWords: [
-      {id: 1, text: 'chose'},
-      {id: 2, text: 'quelque'},
+    related_words: [
+      'chose',
+      'quelque',
     ],
-    time: '1 day ago',
+    days_ago: 4,
   },
 ];
 

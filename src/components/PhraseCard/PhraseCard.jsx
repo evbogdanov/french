@@ -14,12 +14,12 @@ const PhraseCard = (props) => {
   }
 
   let relatedWords = null;
-  if (p.relatedWords.length) {
-    const words = p.relatedWords.map(w => {
+  if (Array.isArray(p.related_words)) {
+    const words = p.related_words.map(w => {
       return (
-        <a key={w.id}
-           href={`/words/link-to-word-with-id-${w.id}`}
-           className="card-link">{w.text}</a>
+        <a key={w}
+           href={`/no-link`} // TODO: no link; select this word as search query
+           className="card-link">{w}</a>
       );
     });
     relatedWords = <p className="card-text">{words}</p>;
@@ -35,7 +35,7 @@ const PhraseCard = (props) => {
   return <Card header={p.text}
                image={p.image}
                body={body}
-               time={p.time} />;
+               days_ago={p.days_ago} />;
 };
 
 export default PhraseCard;
