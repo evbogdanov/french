@@ -8,6 +8,7 @@ import Header from '../Header/Header';
 import Phrases from '../Phrases/Phrases';
 import Words from '../Words/Words';
 import About from '../About/About';
+import Secret from '../Secret/Secret';
 import NotFound from '../NotFound/NotFound';
 
 class App extends Component {
@@ -21,6 +22,7 @@ class App extends Component {
               <Route exact path="/" component={Phrases} />
               <Route path="/words" component={Words} />
               <Route path="/about" component={About} />
+              <Route path="/secret" component={Secret} />
               <Route component={NotFound} />
             </Switch>
           </div>
