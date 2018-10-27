@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import Heading from '../Heading/Heading';
 import CardColumns from '../CardColumns/CardColumns';
 import PhraseCard from '../PhraseCard/PhraseCard';
 import SearchBox from '../SearchBox/SearchBox';
+import * as api from '../../api';
 
 class Phrases extends Component {
   state = {
@@ -12,8 +12,7 @@ class Phrases extends Component {
   }
 
   componentDidMount() {
-    // TODO: put API URL inside a config file
-    axios.get('http://localhost:4000/v1/phrases/search')
+    api.get('/v1/phrases/search')
       .then(res => {
         this.setState({phrases: res.data.data});
       })
