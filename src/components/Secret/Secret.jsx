@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Heading from '../Heading/Heading';
 import * as api from '../../api';
 
 class Secret extends Component {
@@ -33,10 +32,12 @@ class Secret extends Component {
     api.post('/v1/secrets')
       .then(res => {
         this.setState({validFeedback: true});
+        api.setAuthenticated();
       })
       .catch(err => {
         console.log(err);
         this.setState({invalidFeedback: true});
+        api.unsetAuthenticated();
       });
   }
 
@@ -57,7 +58,7 @@ class Secret extends Component {
     
     return (
       <>
-        <Heading>Secret</Heading>
+        <h4>Secret</h4>
         <div className="form-group">
           <input className={inputClassName}
                  type="text"

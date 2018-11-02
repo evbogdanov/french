@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
+axios.defaults.baseURL = API_URL;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -17,16 +18,31 @@ export const setSecret = (secret) => {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+/// Handle authentication
+////////////////////////////////////////////////////////////////////////////////
+
+export const isAuthenticated = () => {
+  return localStorage.getItem('authenticated') || false;
+};
+
+export const setAuthenticated = () => {
+  localStorage.setItem('authenticated', true);
+};
+
+export const unsetAuthenticated = () => {
+  localStorage.removeItem('authenticated');
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
 /// Wrapper around axios
 ////////////////////////////////////////////////////////////////////////////////
 
-export const get = (url) => {
-  return axios.get(`${API_URL}${url}`);
-};
+export const get = axios.get;
 
 export const post = (url, data=null) => {
   return axios.post(
-    `${API_URL}${url}`,
+    url,
     data,
     {
       headers: {'FR_SECRET': getSecret()},
