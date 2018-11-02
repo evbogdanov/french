@@ -58,7 +58,7 @@ class Secret extends Component {
     
     return (
       <>
-        <h4>Secret</h4>
+        <h5>Secret</h5>
         <div className="form-group">
           <input className={inputClassName}
                  type="text"

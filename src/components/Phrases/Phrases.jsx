@@ -3,21 +3,28 @@ import Heading from '../Heading/Heading';
 import CardColumns from '../CardColumns/CardColumns';
 import PhraseCard from '../PhraseCard/PhraseCard';
 import SearchBox from '../SearchBox/SearchBox';
+import Loader from '../Loader/Loader';
 import * as api from '../../api';
 
 class Phrases extends Component {
   state = {
     searchQuery: '',
     phrases: [],
+    loading: false,
   }
 
   componentDidMount() {
+    this.setState({loading: true});
     api.get('/v1/phrases/search')
       .then(res => {
-        this.setState({phrases: res.data.data});
+        this.setState({
+          phrases: res.data.data,
+          loading: false,
+        });
       })
       .catch(err => {
         console.log('Error!', err);
+        this.setState({loading: false});
       });
   }
 
@@ -34,6 +41,7 @@ class Phrases extends Component {
   }
 
   render() {
+    const loader = this.state.loading ? <Loader/> : null;
     const cards = this.state.phrases.map(
       p => <PhraseCard key={p.id} phrase={p} />
     );
@@ -49,6 +57,7 @@ class Phrases extends Component {
         <CardColumns>
           {cards}
         </CardColumns>
+        {loader}
       </>
     );
   }
