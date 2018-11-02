@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
+
 import * as api from '../../api';
 
+/*
+ * Props:
+ * - setAuthenticated
+ * - unsetAuthenticated
+ */
 class Secret extends Component {
   state = {
     secret: api.getSecret(),
@@ -32,11 +38,13 @@ class Secret extends Component {
     api.post('/v1/secrets')
       .then(res => {
         this.setState({validFeedback: true});
+        this.props.setAuthenticated();
         api.setAuthenticated();
       })
       .catch(err => {
         console.log(err);
         this.setState({invalidFeedback: true});
+        this.props.unsetAuthenticated();
         api.unsetAuthenticated();
       });
   }

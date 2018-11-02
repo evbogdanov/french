@@ -22,7 +22,7 @@ export const setSecret = (secret) => {
 ////////////////////////////////////////////////////////////////////////////////
 
 export const isAuthenticated = () => {
-  return localStorage.getItem('authenticated') || false;
+  return Boolean(localStorage.getItem('authenticated'));
 };
 
 export const setAuthenticated = () => {
