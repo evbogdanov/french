@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Input from '../Input/Input';
+import InputSubmit from '../InputSubmit/InputSubmit';
 
 import * as api from '../../api';
 
@@ -10,76 +12,65 @@ import * as api from '../../api';
 class Secret extends Component {
   state = {
     secret: api.getSecret(),
-    validFeedback: false,
-    invalidFeedback: false,
+    isValid: false,
+    isInvalid: false,
   }
 
-  onSecretChange = (event) => {
+  handleSecretChange = (event) => {
     const secret = event.target.value;
     api.setSecret(secret);
     this.setState({
-      validFeedback: false,
-      invalidFeedback: false,
+      isValid: false,
+      isInvalid: false,
       secret
     });
   }
 
-  onKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      this.validateSecret();
-    }
-  }
+  handleSubmit = (event) => {
+    event.preventDefault();
 
-  validateSecret = () => {
     this.setState({
-      validFeedback: false,
-      invalidFeedback: false,
+      isValid: false,
+      isInvalid: false,
     });
+
     api.post('/v1/secrets')
       .then(res => {
-        this.setState({validFeedback: true});
+        this.setState({isValid: true});
         this.props.setAuthenticated();
         api.setAuthenticated();
       })
       .catch(err => {
         console.log(err);
-        this.setState({invalidFeedback: true});
+        this.setState({isInvalid: true});
         this.props.unsetAuthenticated();
         api.unsetAuthenticated();
       });
   }
 
   render() {
-    let feedback = null;
-    const inputClasses = [
-      'form-control',
-    ];
-    if (this.state.validFeedback) {
-      feedback = <div className="valid-feedback">Secret looks good!</div>;
-      inputClasses.push('is-valid');
+    let [validFeedback, invalidFeedback] = [null, null];
+    if (this.state.isValid) {
+      validFeedback = 'Yes, you know it';
     }
-    if (this.state.invalidFeedback) {
-      feedback = <div className="invalid-feedback">Invalid secret :(</div>;
-      inputClasses.push('is-invalid');
+    else if (this.state.isInvalid) {
+      invalidFeedback = 'Hmm, something wrong';
     }
-    const inputClassName = inputClasses.join(' ');
-    
+
     return (
-      <>
-        <h5>Secret</h5>
-        <div className="form-group">
-          <input className={inputClassName}
-                 type="text"
-                 placeholder="Secret"
-                 value={this.state.secret}
-                 onKeyPress={this.onKeyPress}
-                 onChange={this.onSecretChange} />
-          {feedback}
-        </div>
-        <button className="btn btn-primary" onClick={this.validateSecret}>
-          Validate
-        </button>
-      </>
+      <form onSubmit={this.handleSubmit}>
+        <h5>Do you know the secret?</h5>
+        <Input type="password"
+               id="secret"
+               label="Secret"
+               value={this.state.secret}
+               handleChange={this.handleSecretChange}
+               isValid={this.state.isValid}
+               isInvalid={this.state.isInvalid}
+               validFeedback={validFeedback}
+               invalidFeedback={invalidFeedback} />
+        <InputSubmit text="Validate" />
+      </form>
     );
   }
 }

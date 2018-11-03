@@ -16,8 +16,7 @@ const Admin = (props) => {
 
   return (
     <>
-      <Heading>Admin</Heading>
-      <p>Hello, {user}!</p>
+      <Heading>Hello, {user}</Heading>
       <Secret setAuthenticated={props.setAuthenticated}
               unsetAuthenticated={props.unsetAuthenticated} />
       {newWord}
