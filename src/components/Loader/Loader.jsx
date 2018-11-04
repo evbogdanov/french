@@ -3,6 +3,10 @@ import React, { Component } from 'react';
 const DOTS_MIN = 0,
       DOTS_MAX = 3;
 
+/*
+ * Props:
+ * - text (optional)
+ */
 class Loader extends Component {
   state = {
     dots: DOTS_MIN,
@@ -32,11 +36,10 @@ class Loader extends Component {
     for (let i = 0; i < this.state.dots; i += 1) {
       dotsStr += '.';
     }
+    const text = this.props.text || 'Loading';
 
     return (
-      <div className="Loader">
-        <div className="Loader__body">Loading{dotsStr}</div>
-      </div>
+      <span className="Loader">{text}{dotsStr}</span>
     );
   }
 }

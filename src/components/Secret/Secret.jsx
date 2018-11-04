@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Input from '../Input/Input';
 import InputSubmit from '../InputSubmit/InputSubmit';
-
 import * as api from '../../api';
 
 /*
