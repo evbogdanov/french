@@ -8,11 +8,6 @@ import Card from '../Card/Card';
 const PhraseCard = (props) => {
   const p = props.phrase;
 
-  let notes = null;
-  if (p.notes) {
-    notes = <p className="card-text">{p.notes}</p>;
-  }
-
   let relatedWords = null;
   if (Array.isArray(p.related_words)) {
     const words = p.related_words.map(w => {
@@ -25,16 +20,10 @@ const PhraseCard = (props) => {
     relatedWords = <p className="card-text">{words}</p>;
   }
 
-  const body = (
-    <>
-      {notes}
-      {relatedWords}
-    </>
-  );
-
   return <Card header={p.text}
                image={p.image}
-               body={body}
+               notes={p.notes}
+               extraBody={relatedWords}
                days_ago={p.days_ago} />;
 };
 

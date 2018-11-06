@@ -4,7 +4,8 @@ import React from 'react';
  * Props:
  * - header
  * - image
- * - body
+ * - notes
+ * - extraBody (optional)
  * - days_ago
  * - extraClassName (optional)
  */
@@ -24,6 +25,11 @@ const Card = (props) => {
     );
   }
 
+  let notes = null;
+  if (props.notes) {
+    notes = <p className="card-text Card__notes">{props.notes}</p>;
+  }
+
   // TODO: handle weeks, months, years
   const daysAgo = props.days_ago;
   let timeAgo = 'today';
@@ -39,7 +45,8 @@ const Card = (props) => {
       </div>
       <div className="card-body Card__body">
         {image}
-        {props.body}
+        {notes}
+        {props.extraBody}
         <p className="card-text"><small className="text-muted">{timeAgo}</small></p>
       </div>
     </div>
