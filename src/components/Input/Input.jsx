@@ -12,10 +12,12 @@ const DEFAULT_MAX_LENGTH = 1000;
  * - placeholder (optional)
  * - maxLength (optional)
  * - isTextarea (optional)
+ * - textareaRows (optional, default is 3)
  * - isValid (optional)
  * - isInvalid (optional)
  * - validFeedback (optional)
  * - invalidFeedback (optional)
+ * - readOnly (optional)
  */
 const Input = (props) => {
   const classes = [
@@ -30,10 +32,12 @@ const Input = (props) => {
   const className = classes.join(' ');
 
   const placeholder = props.placeholder || '',
-        maxLength = props.maxLength || DEFAULT_MAX_LENGTH;
-  
+        maxLength = props.maxLength || DEFAULT_MAX_LENGTH,
+        readOnly = props.readOnly || false;
+
   let input = null;
   if (props.isTextarea) {
+    const rows = props.textareaRows || 3;
     input = (
       <textarea className={className}
                 id={props.id}
@@ -41,7 +45,8 @@ const Input = (props) => {
                 maxLength={maxLength}
                 value={props.value}
                 onChange={props.handleChange}
-                rows="3"></textarea>
+                rows={rows}
+                readOnly={readOnly}></textarea>
     );
   }
   else {
@@ -54,7 +59,8 @@ const Input = (props) => {
              maxLength={maxLength}
              value={props.value}
              onChange={props.handleChange}
-             autoComplete="off" />
+             autoComplete="off"
+             readOnly={readOnly} />
     );  
   }
 
