@@ -12,11 +12,11 @@ const Header = (props) => {
   return (
     <header className="Header">
       <div className="container Header__container">
-        <div className="Header__logo">
+        <NavLink className="Header__logo" exact to="/">
           <div className="Header__logo-blue"></div>
           <div className="Header__logo-white"></div>
           <div className="Header__logo-red"></div>
-        </div>
+        </NavLink>
         <div className="Header__links">
           <NavLink className="Header__link" exact to="/">Phrases</NavLink>
           <NavLink className="Header__link" to="/words">Words</NavLink>
