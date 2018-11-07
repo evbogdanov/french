@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import FormRow from '../FormRow/FormRow';
 import Input from '../Input/Input';
 import InputSubmit from '../InputSubmit/InputSubmit';
-import Alert from '../Alert/Alert';
+import FormAlert from '../FormAlert/FormAlert';
 import * as api from '../../api';
 
 /*
@@ -76,22 +77,22 @@ class AddWords extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
+    this.setState({
+      successText: '',
+      dangerText: '',
+    });
 
     if (this.state.words.length === 0) {
       this.setState({dangerText: 'No words to add'});
       return;
     }
 
-    this.setState({
-      loading: true,
-      successText: '',
-      dangerText: '',
-    });
-
     const wordIds = this.state.words.map(w => w.id);
+    this.setState({loading: true});
     api.post(`/v1/phrases/${this.props.phraseId}/words`, {wordIds})
       .then(res => {
         this.setState({
+          words: [],
           loading: false,
           successText: 'Related words added',
         });
@@ -109,16 +110,13 @@ class AddWords extends Component {
     let buttonRemoveLast = null;
     if (this.state.words.length) {
       buttonRemoveLast = (
-        <div className="form-group row">
-          <div className="col-sm-2"></div>
-          <div className="col-sm-10">
-            <button type="button"
-                    className="btn btn-outline-primary btn-sm"
-                    onClick={this.removeLastWord}>
-              Remove last word
-            </button>
-          </div>
-        </div>
+        <FormRow>
+          <button type="button"
+                  className="btn btn-outline-primary btn-sm"
+                  onClick={this.removeLastWord}>
+            Remove last word
+          </button>
+        </FormRow>
       );
     }
 
@@ -132,12 +130,11 @@ class AddWords extends Component {
         <li key={s.id} onClick={() => this.addWord(s.id, s.text)}>{s.text}</li>
       ));
       suggestions = (
-        <div className="form-group row">
-          <div className="col-sm-2"></div>
+        <FormRow>
           <ul className="col-sm-10">
             {items}
           </ul>
-        </div>
+        </FormRow>
       );
     }
 
@@ -154,10 +151,10 @@ class AddWords extends Component {
     let [alertSuccess, alertDanger] = [null, null];
     const [successText, dangerText] = [this.state.successText, this.state.dangerText];
     if (successText) {
-      alertSuccess = <Alert type="success" text={successText} />;
+      alertSuccess = <FormAlert type="success" text={successText} />;
     }
     else if (dangerText) {
-      alertDanger = <Alert type="danger" text={dangerText} />;
+      alertDanger = <FormAlert type="danger" text={dangerText} />;
     }
 
     return (

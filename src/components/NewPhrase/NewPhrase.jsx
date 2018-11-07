@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Input from '../Input/Input';
 import InputSubmit from '../InputSubmit/InputSubmit';
-import Alert from '../Alert/Alert';
+import FormAlert from '../FormAlert/FormAlert';
 import AddWords from '../AddWords/AddWords';
 import * as api from '../../api';
 
@@ -79,10 +79,10 @@ class NewPhrase extends Component {
   render() {
     let [alertSuccess, alertDanger] = [null, null];
     if (this.state.success) {
-      alertSuccess = <Alert type="success" text="Phrase created" />;
+      alertSuccess = <FormAlert type="success" text="Phrase created" />;
     }
     else if (this.state.danger) {
-      alertDanger = <Alert type="danger" text="Something wrong" />;
+      alertDanger = <FormAlert type="danger" text="Something wrong" />;
     }
 
     let addWords = null;

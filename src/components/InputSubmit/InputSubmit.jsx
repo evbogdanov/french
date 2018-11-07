@@ -1,5 +1,6 @@
 import React from 'react';
 import Loader from '../Loader/Loader';
+import FormRow from '../FormRow/FormRow';
 
 /*
  * Props
@@ -17,15 +18,12 @@ const InputSubmit = (props) => {
   }
 
   return (
-    <div className="form-group row InputSubmit">
-      <div className="col-sm-2"></div>
-      <div className="col-sm-10">
-        <button type="submit" className="btn btn-primary">{text}</button>
-        <div className="InputSubmit__loader">
-          {loader}
-        </div>
+    <FormRow extraClassName="InputSubmit">
+      <button type="submit" className="btn btn-primary">{text}</button>
+      <div className="InputSubmit__loader">
+        {loader}
       </div>
-    </div>
+    </FormRow>
   );
 };
 
