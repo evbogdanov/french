@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Heading from '../Heading/Heading';
 import SearchBox from '../SearchBox/SearchBox';
 import CardColumns from '../CardColumns/CardColumns';
@@ -44,7 +45,9 @@ class Words extends Component {
     const loader = this.state.loading ? <Loader/> : null;
 
     const cards = this.state.words.map(
-      w => <WordCard key={w.id} word={w} />
+      w => <WordCard key={w.id}
+                     word={w}
+                     isAuthenticated={this.props.isAuthenticated} />
     );
 
     return (
@@ -64,4 +67,15 @@ class Words extends Component {
   }
 }
 
-export default Words;
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.isAuthenticated
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null,
+  null,
+  {pure: false}
+)(Words);

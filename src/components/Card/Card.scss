@@ -33,4 +33,16 @@
   .card-text:not(:last-child) {
     margin-bottom: $card-spacer-y;
   }
+
+  &__footer {
+    font-size: $small-font-size;
+  }
+
+  &__edit {
+    text-align: right;
+    &-btn {
+      color: $blue;
+      cursor: pointer;
+    }
+  }
 }

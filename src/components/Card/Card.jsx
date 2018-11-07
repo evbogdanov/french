@@ -8,6 +8,8 @@ import React from 'react';
  * - extraBody (optional)
  * - days_ago
  * - extraClassName (optional)
+ * - canEdit (optional)
+ * - onClickEdit (optional if !canEdit)
  */
 const Card = (props) => {
   const classes = ['card', 'Card'];
@@ -36,6 +38,14 @@ const Card = (props) => {
   if (daysAgo === 1) timeAgo = 'yesterday';
   if (daysAgo > 1) timeAgo = `${daysAgo} days ago`;
 
+  let edit = null;
+  if (props.canEdit) {
+    edit = (
+      <span className="Card__edit-btn"
+            onClick={props.onClickEdit}>Edit</span>
+    );
+  }
+
   return (
     <div className={className}>
       <div className="card-header Card__header">
@@ -47,7 +57,12 @@ const Card = (props) => {
         {image}
         {notes}
         {props.extraBody}
-        <p className="card-text"><small className="text-muted">{timeAgo}</small></p>
+        <div className="card-text row Card__footer">
+          <div className="col-9 text-muted">{timeAgo}</div>
+          <div className="col-3 Card__edit">
+            {edit}
+          </div>
+        </div>
       </div>
     </div>
   );
