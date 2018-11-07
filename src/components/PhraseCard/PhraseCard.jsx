@@ -12,15 +12,15 @@ const PhraseCard = (props) => {
   if (Array.isArray(p.related_words)) {
     const words = p.related_words.map(w => {
       return (
-        <a key={w}
-           href={`/no-link`} // TODO: no link; select this word as search query
-           className="card-link">{w}</a>
+        <span key={w.id}
+              className="card-link PhraseCard__related-word">{w.text}</span>
       );
     });
     relatedWords = <p className="card-text">{words}</p>;
   }
 
-  return <Card header={p.text}
+  return <Card extraClassName="PhraseCard"
+               header={p.text}
                image={p.image}
                notes={p.notes}
                extraBody={relatedWords}
