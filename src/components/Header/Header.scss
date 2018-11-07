@@ -27,6 +27,7 @@
       height: 2.5rem;
     }
     overflow: hidden;
+    transition: transform .33s ease-in-out;
   }
 
   &__logo-blue { background: $blue; width: 34%; }
