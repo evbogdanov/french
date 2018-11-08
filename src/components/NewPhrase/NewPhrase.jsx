@@ -22,28 +22,13 @@ class NewPhrase extends Component {
     danger: false,
   }
 
-  handleTextChange = (event) => {
-    this.setState({
-      text: event.target.value,
+  handleInputChange = (event, inputName) => {
+    const nextState = {
       success: false,
       danger: false,
-    });
-  }
-
-  handleImageChange = (event) => {
-    this.setState({
-      image: event.target.value,
-      success: false,
-      danger: false,
-    });
-  }
-
-  handleNotesChange = (event) => {
-    this.setState({
-      notes: event.target.value,
-      success: false,
-      danger: false,
-    });
+    };
+    nextState[inputName] = event.target.value;
+    this.setState(nextState);
   }
 
   handleSubmit = (event) => {
@@ -102,19 +87,19 @@ class NewPhrase extends Component {
                    label="Text"
                    maxLength="150"
                    value={this.state.text}
-                   handleChange={this.handleTextChange} />
+                   handleChange={ev => this.handleInputChange(ev, 'text')} />
+            <Input id="new-phrase-notes"
+                   label="Notes"
+                   maxLength="500"
+                   value={this.state.notes}
+                   handleChange={ev => this.handleInputChange(ev, 'notes')}
+                   isTextarea="true" />
             <Input id="new-phrase-image"
                    label="Image"
                    placeholder="Paste image URL"
                    maxLength="100"
                    value={this.state.image}
-                   handleChange={this.handleImageChange} />
-            <Input id="new-phrase-notes"
-                   label="Notes"
-                   maxLength="500"
-                   value={this.state.notes}
-                   handleChange={this.handleNotesChange}
-                   isTextarea="true" />
+                   handleChange={ev => this.handleInputChange(ev, 'image')} />
             <InputSubmit text="Create phrase"
                          loadingText="Creating"
                          loading={this.state.loading} />

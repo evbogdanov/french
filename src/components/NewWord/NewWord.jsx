@@ -80,12 +80,6 @@ class NewWord extends Component {
                  maxLength="40"
                  value={this.state.text}
                  handleChange={ev => this.handleInputChange(ev, 'text')} />
-          <Input id="new-word-image"
-                 label="Image"
-                 placeholder="Paste image URL"
-                 maxLength="100"
-                 value={this.state.image}
-                 handleChange={ev => this.handleInputChange(ev, 'image')} />
           <Input id="new-word-notes"
                  label="Notes"
                  maxLength="500"
@@ -99,6 +93,12 @@ class NewWord extends Component {
                  handleChange={ev => this.handleInputChange(ev, 'gender')}
                  isInvalid={isInvalidGender}
                  invalidFeedback={invalidGenderFeedback} />
+          <Input id="new-word-image"
+                 label="Image"
+                 placeholder="Paste image URL"
+                 maxLength="100"
+                 value={this.state.image}
+                 handleChange={ev => this.handleInputChange(ev, 'image')} />
           <InputSubmit text="Create word"
                        loadingText="Creating"
                        loading={this.state.loading} />
