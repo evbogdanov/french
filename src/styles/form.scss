@@ -1,6 +1,10 @@
 form {
   padding: 1rem 0;
 
+  &.form-simple {
+    padding: 0;
+  }
+
   h5 {
     margin-bottom: .75rem;
   }

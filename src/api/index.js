@@ -49,3 +49,13 @@ export const post = (url, data=null) => {
     }
   );
 };
+
+export const put = (url, data=null) => {
+  return axios.put(
+    url,
+    data,
+    {
+      headers: {'FR_SECRET': getSecret()},
+    }
+  );
+};

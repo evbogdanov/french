@@ -4,7 +4,8 @@ const DEFAULT_MAX_LENGTH = 1000;
 
 /*
  * Props:
- * - id
+ * - simple (optional)
+ * - id (optional if simple===true)
  * - label
  * - value
  * - handleChange
@@ -35,32 +36,32 @@ const Input = (props) => {
         maxLength = props.maxLength || DEFAULT_MAX_LENGTH,
         readOnly = props.readOnly || false;
 
+  const params = {
+    value: props.value,
+    onChange: props.handleChange,
+    className,
+    placeholder,
+    maxLength,
+    readOnly,
+  };
+  if (!props.simple) {
+    // Need id for clicable label
+    params.id = props.id;
+  }
+
   let input = null;
   if (props.isTextarea) {
     const rows = props.textareaRows || 3;
     input = (
-      <textarea className={className}
-                id={props.id}
-                placeholder={placeholder}
-                maxLength={maxLength}
-                value={props.value}
-                onChange={props.handleChange}
-                rows={rows}
-                readOnly={readOnly}></textarea>
+      <textarea rows={rows} {...params}></textarea>
     );
   }
   else {
     const type = props.type || 'text';
     input = (
       <input type={type}
-             className={className}
-             id={props.id}
-             placeholder={placeholder}
-             maxLength={maxLength}
-             value={props.value}
-             onChange={props.handleChange}
              autoComplete="off"
-             readOnly={readOnly} />
+             {...params} />
     );  
   }
 
@@ -70,6 +71,15 @@ const Input = (props) => {
   }
   else if (props.invalidFeedback) {
     feedback = <div className="invalid-feedback">{props.invalidFeedback}</div>;
+  }
+
+  if (props.simple) {
+    return (
+      <div className="form-group">
+        {input}
+        {feedback}
+      </div>
+    );
   }
 
   return (

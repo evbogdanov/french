@@ -2,12 +2,18 @@ import React, { Component } from 'react';
 import WordForm from '../WordForm/WordForm';
 import * as api from '../../api';
 
-class NewWord extends Component {
+/*
+ * Props:
+ * - word
+ * - editWord
+ * - cancelEditing
+ */
+class EditWord extends Component {
   state = {
-    text: '',
-    image: '',
-    notes: '',
-    gender: '',
+    text: this.props.word.text,
+    image: this.props.word.image,
+    notes: this.props.word.notes,
+    gender: this.props.word.gender,
 
     loading: false,
     successText: '',
@@ -30,16 +36,15 @@ class NewWord extends Component {
       successText: '',
       dangerText: '',
     });
-    api.post('/v1/words', this.state)
+    api.put(`/v1/words/${this.props.word.id}`, this.state)
       .then(res => {
-        this.setState({
-          text: '',
-          image: '',
-          notes: '',
-          gender: '',
-          loading: false,
-          successText: 'Word created',
-        });
+        this.props.editWord(
+          this.state.text,
+          this.state.image,
+          this.state.notes,
+          this.state.gender,
+        );
+        this.props.cancelEditing();
       })
       .catch(err => {
         console.log(err);
@@ -52,16 +57,16 @@ class NewWord extends Component {
 
   render() {
     return (
-      <WordForm simple={false}
+      <WordForm simple={true}
                 text={this.state.text}
                 image={this.state.image}
                 notes={this.state.notes}
                 gender={this.state.gender}
                 handleInputChange={this.handleInputChange}
                 handleSubmit={this.handleSubmit}
-                headingText="New word"
-                submitText="Create word"
-                loadingText="Creating"
+                headingText=""
+                submitText="Save"
+                loadingText="Saving"
                 loading={this.state.loading}
                 successText={this.state.successText}
                 dangerText={this.state.dangerText} />
@@ -69,4 +74,4 @@ class NewWord extends Component {
   }
 }
 
-export default NewWord;
+export default EditWord;
