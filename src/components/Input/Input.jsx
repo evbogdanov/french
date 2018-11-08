@@ -45,7 +45,7 @@ const Input = (props) => {
     readOnly,
   };
   if (!props.simple) {
-    // Need id for clicable label
+    // Need id for clickable label
     params.id = props.id;
   }
 
