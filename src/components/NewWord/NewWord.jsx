@@ -20,36 +20,13 @@ class NewWord extends Component {
     danger: false,
   }
 
-  handleTextChange = (event) => {
-    this.setState({
-      text: event.target.value,
+  handleInputChange = (event, inputName) => {
+    const nextState = {
       success: false,
       danger: false,
-    });
-  }
-
-  handleImageChange = (event) => {
-    this.setState({
-      image: event.target.value,
-      success: false,
-      danger: false,
-    });
-  }
-
-  handleNotesChange = (event) => {
-    this.setState({
-      notes: event.target.value,
-      success: false,
-      danger: false,
-    });
-  }
-
-  handleGenderChange = (event) => {
-    this.setState({
-      gender: event.target.value,
-      success: false,
-      danger: false,
-    });
+    };
+    nextState[inputName] = event.target.value;
+    this.setState(nextState);
   }
 
   handleSubmit = (event) => {
@@ -102,24 +79,24 @@ class NewWord extends Component {
                  label="Text"
                  maxLength="40"
                  value={this.state.text}
-                 handleChange={this.handleTextChange} />
+                 handleChange={ev => this.handleInputChange(ev, 'text')} />
           <Input id="new-word-image"
                  label="Image"
                  placeholder="Paste image URL"
                  maxLength="100"
                  value={this.state.image}
-                 handleChange={this.handleImageChange} />
+                 handleChange={ev => this.handleInputChange(ev, 'image')} />
           <Input id="new-word-notes"
                  label="Notes"
                  maxLength="500"
                  value={this.state.notes}
-                 handleChange={this.handleNotesChange}
+                 handleChange={ev => this.handleInputChange(ev, 'notes')}
                  isTextarea="true" />
           <Input id="new-word-gender"
                  label="Gender"
                  maxLength="1"
                  value={this.state.gender}
-                 handleChange={this.handleGenderChange}
+                 handleChange={ev => this.handleInputChange(ev, 'gender')}
                  isInvalid={isInvalidGender}
                  invalidFeedback={invalidGenderFeedback} />
           <InputSubmit text="Create word"
