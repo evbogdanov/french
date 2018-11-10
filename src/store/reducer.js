@@ -4,6 +4,7 @@ import * as actions from './actions';
 const initialState = {
   isAuthenticated: api.isAuthenticated(),
   words: [],
+  phrases: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -46,6 +47,12 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       words: filteredWords
+    };
+
+  case actions.SET_PHRASES:
+    return {
+      ...state,
+      phrases: action.data.phrases
     };
 
   default:
