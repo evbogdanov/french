@@ -11,7 +11,6 @@ import EditWord from '../EditWord/EditWord';
 class WordCard extends Component {
   state = {
     editing: false,
-    word: this.props.word,
   }
 
   startEditing = () => {
@@ -22,23 +21,13 @@ class WordCard extends Component {
     this.setState({editing: false});
   }
 
-  editWord = (text, image, notes, gender) => {
-    const word = {...this.state.word};
-    word.text = text;
-    word.image = image;
-    word.notes = notes;
-    word.gender = gender;
-    this.setState({word});
-  }
-
   render() {
-    const w = this.state.word;
+    const w = this.props.word;
 
     if (this.state.editing) {
       return (
         <EditCard onClickCancel={this.cancelEditing}>
           <EditWord word={w}
-                    editWord={this.editWord}
                     cancelEditing={this.cancelEditing} />
         </EditCard>
       );

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import WordForm from '../WordForm/WordForm';
 import * as api from '../../api';
+import * as actions from '../../store/actions';
 
 /*
  * Props:
  * - word
- * - editWord
  * - cancelEditing
  */
 class EditWord extends Component {
@@ -39,6 +40,7 @@ class EditWord extends Component {
     api.put(`/v1/words/${this.props.word.id}`, this.state)
       .then(res => {
         this.props.editWord(
+          this.props.word.id,
           this.state.text,
           this.state.image,
           this.state.notes,
@@ -74,4 +76,18 @@ class EditWord extends Component {
   }
 }
 
-export default EditWord;
+const mapDispatchToProps = dispatch => {
+  return {
+    editWord: (id, text, image, notes, gender) => dispatch({
+      type: actions.EDIT_WORD,
+      data: {id, text, image, notes, gender}
+    })
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps,
+  null,
+  {pure: false}
+)(EditWord);

@@ -6,11 +6,11 @@ import CardColumns from '../CardColumns/CardColumns';
 import WordCard from '../WordCard/WordCard';
 import Loader from '../Loader/Loader';
 import * as api from '../../api';
+import * as actions from '../../store/actions';
 
 class Words extends Component {
   state = {
     searchQuery: '',
-    words:  [],
     loading: false,
   }
 
@@ -18,10 +18,8 @@ class Words extends Component {
     this.setState({loading: true});
     api.get('/v1/words/search')
       .then(res => {
-        this.setState({
-          words: res.data.data,
-          loading: false,
-        });
+        this.setState({loading: false});
+        this.props.setWords(res.data.data);
       })
       .catch(err => {
         console.log('Error!', err);
@@ -44,7 +42,7 @@ class Words extends Component {
   render() {
     const loader = this.state.loading ? <Loader/> : null;
 
-    const cards = this.state.words.map(
+    const cards = this.props.words.map(
       w => <WordCard key={w.id}
                      word={w}
                      isAuthenticated={this.props.isAuthenticated} />
@@ -69,13 +67,23 @@ class Words extends Component {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.isAuthenticated
+    isAuthenticated: state.isAuthenticated,
+    words: state.words,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setWords: words => dispatch({
+      type: actions.SET_WORDS,
+      data: {words}
+    })
   };
 };
 
 export default connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
   null,
   {pure: false}
 )(Words);
