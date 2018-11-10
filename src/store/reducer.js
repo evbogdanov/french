@@ -41,6 +41,13 @@ const reducer = (state = initialState, action) => {
       words
     };
 
+  case actions.DELETE_WORD:
+    const filteredWords = state.words.filter(w => w.id !== action.data.id);
+    return {
+      ...state,
+      words: filteredWords
+    };
+
   default:
     return state;
   }

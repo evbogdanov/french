@@ -3,3 +3,4 @@ export const UNSET_AUTHENTICATED = 'UNSET_AUTHENTICATED';
 
 export const SET_WORDS = 'SET_WORDS';
 export const EDIT_WORD = 'EDIT_WORD';
+export const DELETE_WORD = 'DELETE_WORD';

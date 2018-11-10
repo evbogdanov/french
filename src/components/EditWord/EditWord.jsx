@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import WordForm from '../WordForm/WordForm';
+import FormDelete from '../FormDelete/FormDelete';
 import * as api from '../../api';
 import * as actions from '../../store/actions';
 
@@ -19,6 +20,9 @@ class EditWord extends Component {
     loading: false,
     successText: '',
     dangerText: '',
+
+    loadingDelete: false,
+    dangerTextDelete: '',
   }
 
   handleInputChange = (event, inputName) => {
@@ -30,7 +34,7 @@ class EditWord extends Component {
     this.setState(nextState);
   }
 
-  handleSubmit = (event) => {
+  handleSubmitEdit = (event) => {
     event.preventDefault();
     this.setState({
       loading: true,
@@ -57,21 +61,45 @@ class EditWord extends Component {
       });
   }
 
+  handleSubmitDelete = (event) => {
+    event.preventDefault();
+    this.setState({
+      loadingDelete: true,
+      dangerTextDelete: '',
+    });
+    api.del(`/v1/words/${this.props.word.id}`)
+      .then(res => {
+        this.props.deleteWordById(this.props.word.id);
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({
+          loadingDelete: false,
+          dangerTextDelete: "Couldn't delete"
+        });
+      });
+  }
+
   render() {
     return (
-      <WordForm simple={true}
-                text={this.state.text}
-                image={this.state.image}
-                notes={this.state.notes}
-                gender={this.state.gender}
-                handleInputChange={this.handleInputChange}
-                handleSubmit={this.handleSubmit}
-                headingText=""
-                submitText="Save"
-                loadingText="Saving"
-                loading={this.state.loading}
-                successText={this.state.successText}
-                dangerText={this.state.dangerText} />
+      <>
+        <WordForm simple={true}
+                  text={this.state.text}
+                  image={this.state.image}
+                  notes={this.state.notes}
+                  gender={this.state.gender}
+                  handleInputChange={this.handleInputChange}
+                  handleSubmit={this.handleSubmitEdit}
+                  headingText=""
+                  submitText="Save"
+                  loadingText="Saving"
+                  loading={this.state.loading}
+                  successText={this.state.successText}
+                  dangerText={this.state.dangerText} />
+        <FormDelete handleSubmit={this.handleSubmitDelete}
+                    dangerText={this.state.dangerTextDelete}
+                    loading={this.state.loadingDelete} />
+      </>
     );
   }
 }
@@ -81,6 +109,10 @@ const mapDispatchToProps = dispatch => {
     editWord: (id, text, image, notes, gender) => dispatch({
       type: actions.EDIT_WORD,
       data: {id, text, image, notes, gender}
+    }),
+    deleteWordById: id => dispatch({
+      type: actions.DELETE_WORD,
+      data: {id}
     })
   };
 };

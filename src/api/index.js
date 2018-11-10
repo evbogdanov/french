@@ -59,3 +59,12 @@ export const put = (url, data=null) => {
     }
   );
 };
+
+export const del = (url) => {
+  return axios.delete(
+    url,
+    {
+      headers: {'FR_SECRET': getSecret()},
+    }
+  );
+};

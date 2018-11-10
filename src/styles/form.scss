@@ -5,6 +5,10 @@ form {
     padding: 0;
   }
 
+  &.form-slim {
+    margin-bottom: -1rem;
+  }
+
   h5 {
     margin-bottom: .75rem;
   }
