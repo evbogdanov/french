@@ -42,7 +42,9 @@ class Phrases extends Component {
   render() {
     const loader = this.state.loading ? <Loader/> : null;
     const cards = this.props.phrases.map(
-      p => <PhraseCard key={p.id} phrase={p} />
+      p => <PhraseCard key={p.id}
+                       phrase={p}
+                       isAuthenticated={this.props.isAuthenticated} />
     );
 
     return (

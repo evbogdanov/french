@@ -55,6 +55,27 @@ const reducer = (state = initialState, action) => {
       phrases: action.data.phrases
     };
 
+  case actions.EDIT_PHRASE:
+    const phrases = state.phrases.map(p => {
+      if (p.id === action.data.id) {
+        p.text = action.data.text;
+        p.image = action.data.image;
+        p.notes = action.data.notes;
+      }
+      return p;
+    });
+    return {
+      ...state,
+      phrases
+    };
+
+  case actions.DELETE_PHRASE:
+    const filteredPhrases = state.phrases.filter(p => p.id !== action.data.id);
+    return {
+      ...state,
+      phrases: filteredPhrases
+    };
+
   default:
     return state;
   }
