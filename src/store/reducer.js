@@ -76,6 +76,42 @@ const reducer = (state = initialState, action) => {
       phrases: filteredPhrases
     };
 
+  case actions.ADD_RELATED_WORD:
+    const updPhrases = state.phrases.map(p => {
+      if (p.id === action.data.phraseId) {
+        const word = {
+          id: action.data.wordId,
+          text: action.data.wordText,
+        };
+        if (Array.isArray(p.related_words)) {
+          const words = p.related_words.filter(w => w.id !== action.data.wordId);
+          words.push(word);
+          p.related_words = words;
+        }
+        else {
+          p.related_words = [word];
+        }
+      }
+      return p;
+    });
+    return {
+      ...state,
+      phrases: updPhrases
+    };
+
+  case actions.REMOVE_RELATED_WORD:
+    const updatedPhrases = state.phrases.map(p => {
+      if (p.id === action.data.phraseId && Array.isArray(p.related_words)) {
+        const words = p.related_words.filter(w => w.id !== action.data.wordId);
+        p.related_words = words;
+      }
+      return p;
+    });
+    return {
+      ...state,
+      phrases: updatedPhrases
+    };
+
   default:
     return state;
   }

@@ -13,7 +13,7 @@ const EditCard = (props) => {
       <div className="card-footer text-center">
         <button type="button"
                 onClick={props.onClickCancel}
-                className="btn btn-secondary btn-sm">Cancel</button>
+                className="btn btn-secondary btn-sm">Done</button>
       </div>
     </div>
   );

@@ -8,3 +8,6 @@ export const DELETE_WORD = 'DELETE_WORD';
 export const SET_PHRASES = 'SET_PHRASES';
 export const EDIT_PHRASE = 'EDIT_PHRASE';
 export const DELETE_PHRASE = 'DELETE_PHRASE';
+
+export const ADD_RELATED_WORD = 'ADD_RELATED_WORD';
+export const REMOVE_RELATED_WORD = 'REMOVE_RELATED_WORD';
