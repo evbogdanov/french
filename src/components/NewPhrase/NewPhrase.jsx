@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import Input from '../Input/Input';
-import InputSubmit from '../InputSubmit/InputSubmit';
-import FormAlert from '../FormAlert/FormAlert';
+import SharedForm from '../SharedForm/SharedForm';
 import AddWords from '../AddWords/AddWords';
 import * as api from '../../api';
 
@@ -18,14 +16,14 @@ class NewPhrase extends Component {
 
     // UI
     loading: false,
-    success: false,
-    danger: false,
+    successText: '',
+    dangerText: '',
   }
 
   handleInputChange = (event, inputName) => {
     const nextState = {
-      success: false,
-      danger: false,
+      successText: '',
+      dangerText: '',
     };
     nextState[inputName] = event.target.value;
     this.setState(nextState);
@@ -37,8 +35,8 @@ class NewPhrase extends Component {
       createdId: null,
       createdText: '',
       loading: true,
-      success: false,
-      danger: false,
+      successText: '',
+      dangerText: '',
     });
     api.post('/v1/phrases', this.state)
       .then(res => {
@@ -49,64 +47,39 @@ class NewPhrase extends Component {
           createdId: res.data.data.id,
           createdText: prevState.text,
           loading: false,
-          success: true,
+          successText: 'Phrase created',
         }));
       })
       .catch(err => {
         console.log(err);
         this.setState({
           loading: false,
-          danger: true,
+          dangerText: 'Server error',
         });
       });
   }
 
   render() {
-    let [alertSuccess, alertDanger] = [null, null];
-    if (this.state.success) {
-      alertSuccess = <FormAlert type="success" text="Phrase created" />;
-    }
-    else if (this.state.danger) {
-      alertDanger = <FormAlert type="danger" text="Something wrong" />;
-    }
-
-    let addWords = null;
-    if (this.state.createdId) {
-      addWords = (
-        <AddWords phraseId={this.state.createdId}
-                  phraseText={this.state.createdText} />
-      );
-    }
+    const addWords = !this.state.createdId ? null : (
+      <AddWords phraseId={this.state.createdId}
+                phraseText={this.state.createdText} />
+    );
 
     return (
       <>
-        <form onSubmit={this.handleSubmit}>
-          <fieldset disabled={this.state.loading}>
-            <h5>New phrase</h5>
-            <Input id="new-phrase-text"
-                   label="Text"
-                   maxLength="150"
-                   value={this.state.text}
-                   handleChange={ev => this.handleInputChange(ev, 'text')} />
-            <Input id="new-phrase-notes"
-                   label="Notes"
-                   maxLength="500"
-                   value={this.state.notes}
-                   handleChange={ev => this.handleInputChange(ev, 'notes')}
-                   isTextarea="true" />
-            <Input id="new-phrase-image"
-                   label="Image"
-                   placeholder="Paste image URL"
-                   maxLength="100"
-                   value={this.state.image}
-                   handleChange={ev => this.handleInputChange(ev, 'image')} />
-            <InputSubmit text="Create phrase"
-                         loadingText="Creating"
-                         loading={this.state.loading} />
-          </fieldset>
-          {alertSuccess}
-          {alertDanger}
-        </form>
+        <SharedForm simple={false}
+                    model="phrase"
+                    text={this.state.text}
+                    image={this.state.image}
+                    notes={this.state.notes}
+                    handleInputChange={this.handleInputChange}
+                    handleSubmit={this.handleSubmit}
+                    headingText="New phrase"
+                    submitText="Create phrase"
+                    loadingText="Creating"
+                    loading={this.state.loading}
+                    successText={this.state.successText}
+                    dangerText={this.state.dangerText} />
         {addWords}
       </>
     );

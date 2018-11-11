@@ -4,16 +4,19 @@ import InputSubmit from '../InputSubmit/InputSubmit';
 import Alert from '../Alert/Alert';
 import FormAlert from '../FormAlert/FormAlert';
 
-const GENDERS = ['f', 'm', ''];
+const GENDERS = ['f', 'm', ''],
+      PHRASE_TEXT_MAX_LENGTH = 150,
+      WORD_TEXT_MAX_LENGTH = 40;
 
 /*
  * Props:
  * - simple
+ * - model ("word" or "phrase")
  *
  * - text
  * - image
  * - notes
- * - gender
+ * - gender ("word" model only)
  * 
  * - handleInputChange
  * - handleSubmit
@@ -26,7 +29,14 @@ const GENDERS = ['f', 'm', ''];
  * - successText
  * - dangerText
  */
-const WordForm = (props) => {
+const SharedForm = (props) => {
+  const formClassName = props.simple ? 'form-simple' : null;
+
+  let heading = null;
+  if (props.headingText) {
+    heading = <h5>{props.headingText}</h5>;
+  }
+
   let [alertSuccess, alertDanger] = [null, null];
   const Al = props.simple ? Alert : FormAlert;
   if (props.successText) {
@@ -36,49 +46,51 @@ const WordForm = (props) => {
     alertDanger = <Al type="danger" text={props.dangerText} />;
   }
 
-  let [isInvalidGender, invalidGenderFeedback] = [false, null];
-  if (!GENDERS.includes(props.gender)) {
-    isInvalidGender = true;
-    invalidGenderFeedback = "Invalid gender! Valid genders are 'f' or 'm'";
+  let inputGender = null;
+  if (props.model === 'word') {
+    let [isInvalidGender, invalidGenderFeedback] = [false, null];
+    if (!GENDERS.includes(props.gender)) {
+      isInvalidGender = true;
+      invalidGenderFeedback = "Invalid gender! Valid genders are 'f' or 'm'";
+    }
+    inputGender = (
+      <Input simple={props.simple}
+             id="word-gender"
+             label="Gender"
+             placeholder="Gender"
+             maxLength="1"
+             value={props.gender}
+             handleChange={ev => props.handleInputChange(ev, 'gender')}
+             isInvalid={isInvalidGender}
+             invalidFeedback={invalidGenderFeedback} />
+    );
   }
 
-  let heading = null;
-  if (props.headingText) {
-    heading = <h5>{props.headingText}</h5>;
-  }
-
-  const formClassName = props.simple ? 'form-simple' : null;
+  const textMaxLength = props.model === 'word' ? WORD_TEXT_MAX_LENGTH
+                                               : PHRASE_TEXT_MAX_LENGTH;
 
   return (
     <form onSubmit={props.handleSubmit} className={formClassName}>
       <fieldset disabled={props.loading}>
         {heading}
         <Input simple={props.simple}
-               id="word-text"
+               id={`${props.model}-text`}
                label="Text"
                placeholder="Text"
-               maxLength="40"
+               maxLength={textMaxLength}
                value={props.text}
                handleChange={ev => props.handleInputChange(ev, 'text')} />
         <Input simple={props.simple}
-               id="word-notes"
+               id={`${props.model}-notes`}
                label="Notes"
                placeholder="Notes"
                maxLength="500"
                value={props.notes}
                handleChange={ev => props.handleInputChange(ev, 'notes')}
                isTextarea="true" />
+        {inputGender}
         <Input simple={props.simple}
-               id="word-gender"
-               label="Gender"
-               placeholder="Gender"
-               maxLength="1"
-               value={props.gender}
-               handleChange={ev => props.handleInputChange(ev, 'gender')}
-               isInvalid={isInvalidGender}
-               invalidFeedback={invalidGenderFeedback} />
-        <Input simple={props.simple}
-               id="word-image"
+               id={`${props.model}-image`}
                label="Image"
                placeholder="Paste image URL"
                maxLength="100"
@@ -95,4 +107,4 @@ const WordForm = (props) => {
   );
 };
 
-export default WordForm;
+export default SharedForm;

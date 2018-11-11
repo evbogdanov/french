@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import SharedForm from '../SharedForm/SharedForm';
 import FormDelete from '../FormDelete/FormDelete';
 import * as api from '../../api';
 import * as actions from '../../store/actions';
@@ -80,7 +81,19 @@ class EditPhrase extends Component {
   render() {
     return (
       <>
-        <p>Edit phrase: {this.state.text}</p>
+        <SharedForm simple={true}
+                    model="phrase"
+                    text={this.state.text}
+                    image={this.state.image}
+                    notes={this.state.notes}
+                    handleInputChange={this.handleInputChange}
+                    handleSubmit={this.handleSubmitEdit}
+                    headingText={null}
+                    submitText="Save"
+                    loadingText="Saving"
+                    loading={this.state.loading}
+                    successText={this.state.successText}
+                    dangerText={this.state.dangerText} />
         <FormDelete handleSubmit={this.handleSubmitDelete}
                     dangerText={this.state.dangerTextDelete}
                     loading={this.state.loadingDelete} />

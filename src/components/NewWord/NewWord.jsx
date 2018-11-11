@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import WordForm from '../WordForm/WordForm';
+import SharedForm from '../SharedForm/SharedForm';
 import * as api from '../../api';
 
 class NewWord extends Component {
@@ -52,19 +52,20 @@ class NewWord extends Component {
 
   render() {
     return (
-      <WordForm simple={false}
-                text={this.state.text}
-                image={this.state.image}
-                notes={this.state.notes}
-                gender={this.state.gender}
-                handleInputChange={this.handleInputChange}
-                handleSubmit={this.handleSubmit}
-                headingText="New word"
-                submitText="Create word"
-                loadingText="Creating"
-                loading={this.state.loading}
-                successText={this.state.successText}
-                dangerText={this.state.dangerText} />
+      <SharedForm simple={false}
+                  model="word"
+                  text={this.state.text}
+                  image={this.state.image}
+                  notes={this.state.notes}
+                  gender={this.state.gender}
+                  handleInputChange={this.handleInputChange}
+                  handleSubmit={this.handleSubmit}
+                  headingText="New word"
+                  submitText="Create word"
+                  loadingText="Creating"
+                  loading={this.state.loading}
+                  successText={this.state.successText}
+                  dangerText={this.state.dangerText} />
     );
   }
 }

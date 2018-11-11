@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import WordForm from '../WordForm/WordForm';
+import SharedForm from '../SharedForm/SharedForm';
 import FormDelete from '../FormDelete/FormDelete';
 import * as api from '../../api';
 import * as actions from '../../store/actions';
@@ -83,19 +83,20 @@ class EditWord extends Component {
   render() {
     return (
       <>
-        <WordForm simple={true}
-                  text={this.state.text}
-                  image={this.state.image}
-                  notes={this.state.notes}
-                  gender={this.state.gender}
-                  handleInputChange={this.handleInputChange}
-                  handleSubmit={this.handleSubmitEdit}
-                  headingText=""
-                  submitText="Save"
-                  loadingText="Saving"
-                  loading={this.state.loading}
-                  successText={this.state.successText}
-                  dangerText={this.state.dangerText} />
+        <SharedForm simple={true}
+                    model="word"
+                    text={this.state.text}
+                    image={this.state.image}
+                    notes={this.state.notes}
+                    gender={this.state.gender}
+                    handleInputChange={this.handleInputChange}
+                    handleSubmit={this.handleSubmitEdit}
+                    headingText={null}
+                    submitText="Save"
+                    loadingText="Saving"
+                    loading={this.state.loading}
+                    successText={this.state.successText}
+                    dangerText={this.state.dangerText} />
         <FormDelete handleSubmit={this.handleSubmitDelete}
                     dangerText={this.state.dangerTextDelete}
                     loading={this.state.loadingDelete} />
