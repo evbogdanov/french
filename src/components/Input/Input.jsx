@@ -24,6 +24,9 @@ const Input = (props) => {
   const classes = [
     'form-control',
   ];
+  if (props.simple) {
+    classes.push('form-control-sm');
+  }
   if (props.isValid) {
     classes.push('is-valid');
   }
