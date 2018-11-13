@@ -46,6 +46,10 @@ class Suggestions extends Component {
   }
 
   render() {
+    if (this.state.suggestions.length === 0) {
+      return null;
+    }
+
     const classes = ['Suggestions'];
     if (this.props.extraClassName) {
       classes.push(this.props.extraClassName);

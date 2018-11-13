@@ -5,6 +5,7 @@ const initialState = {
   isAuthenticated: api.isAuthenticated(),
   words: [],
   phrases: [],
+  searchPhrasesText: '',
 };
 
 const reducer = (state = initialState, action) => {
@@ -110,6 +111,12 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       phrases: updatedPhrases
+    };
+
+  case actions.SET_SEARCH_PHRASES_TEXT:
+    return {
+      ...state,
+      searchPhrasesText: action.data.searchPhrasesText
     };
 
   default:

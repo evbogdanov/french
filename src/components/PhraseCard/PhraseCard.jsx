@@ -7,6 +7,7 @@ import EditPhrase from '../EditPhrase/EditPhrase';
  * Props:
  * - phrase
  * - isAuthenticated
+ * - setSearchPhrasesText
  */
 class PhraseCard extends Component {
   state = {
@@ -35,12 +36,11 @@ class PhraseCard extends Component {
 
     let relatedWords = null;
     if (Array.isArray(p.related_words)) {
-      const words = p.related_words.map(w => {
-        return (
-          <span key={w.id}
-                className="card-link PhraseCard__related-word">{w.text}</span>
-        );
-      });
+      const words = p.related_words.map(w => (
+        <span key={w.id}
+              onClick={() => this.props.setSearchPhrasesText(w.text)}
+              className="card-link PhraseCard__related-word">{w.text}</span>
+      ));
       relatedWords = <p className="card-text">{words}</p>;
     }
     return <Card extraClassName="PhraseCard"

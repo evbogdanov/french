@@ -15,4 +15,13 @@
     font-size: $font-size-sm;
     padding: $input-padding-y-sm $input-padding-x-sm;
   }
+
+  &_search {
+    margin-top: -($card-columns-gap / 2 * 3);
+    padding: $card-columns-gap 0;
+  }
+
+  &_search &__item {
+    padding: $input-padding-y-sm $card-spacer-x;
+  }
 }

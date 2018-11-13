@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Heading from '../Heading/Heading';
+import Suggestions from '../Suggestions/Suggestions';
 import CardColumns from '../CardColumns/CardColumns';
 import PhraseCard from '../PhraseCard/PhraseCard';
 import SearchBox from '../SearchBox/SearchBox';
@@ -10,8 +11,8 @@ import * as actions from '../../store/actions';
 
 class Phrases extends Component {
   state = {
-    searchQuery: '',
     loading: false,
+    hideSuggestions: false,
   }
 
   componentDidMount() {
@@ -27,34 +28,55 @@ class Phrases extends Component {
       });
   }
 
+  componentWillUnmount() {
+    this.props.setSearchPhrasesText('');
+  }
+
   onSearchChange = (event) => {
-    this.setState({searchQuery: event.target.value});
+    this.setState({hideSuggestions: false});
+    this.props.setSearchPhrasesText(event.target.value);
   }
 
   onSearchStart = () => {
-    console.log('Search phrases:', this.state.searchQuery);
+    this.setState({hideSuggestions: true});
+    console.log('Search phrases:', this.props.searchPhrasesText);
   }
 
   onSearchClear = () => {
-    this.setState({searchQuery: ''});
+    this.props.setSearchPhrasesText('');
+  }
+
+  handleSuggestionClick = (phraseId, phraseText) => {
+    this.props.setSearchPhrasesText(phraseText);
+    this.setState({hideSuggestions: true});
   }
 
   render() {
     const loader = this.state.loading ? <Loader/> : null;
-    const cards = this.props.phrases.map(
-      p => <PhraseCard key={p.id}
-                       phrase={p}
-                       isAuthenticated={this.props.isAuthenticated} />
+
+    const cards = this.props.phrases.map(p => (
+      <PhraseCard key={p.id}
+                  phrase={p}
+                  isAuthenticated={this.props.isAuthenticated}
+                  setSearchPhrasesText={this.props.setSearchPhrasesText} />
+    ));
+
+    const suggestions = this.state.hideSuggestions ? null : (
+      <Suggestions text={this.props.searchPhrasesText}
+                   model="phrases"
+                   handleSuggestionClick={this.handleSuggestionClick}
+                   extraClassName="Suggestions_search" />
     );
 
     return (
       <>
         <Heading>Phrases</Heading>
         <SearchBox placeholder="Search phrases"
-                   value={this.state.searchQuery}
+                   value={this.props.searchPhrasesText}
                    onChange={this.onSearchChange}
                    onSearchStart={this.onSearchStart}
                    onClear={this.onSearchClear} />
+        {suggestions}
         <CardColumns>
           {cards}
         </CardColumns>
@@ -68,6 +90,7 @@ const mapStateToProps = state => {
   return {
     isAuthenticated: state.isAuthenticated,
     phrases: state.phrases,
+    searchPhrasesText: state.searchPhrasesText,
   };
 };
 
@@ -76,6 +99,10 @@ const mapDispatchToProps = dispatch => {
     setPhrases: phrases => dispatch({
       type: actions.SET_PHRASES,
       data: {phrases}
+    }),
+    setSearchPhrasesText: searchPhrasesText => dispatch({
+      type: actions.SET_SEARCH_PHRASES_TEXT,
+      data: {searchPhrasesText}
     })
   };
 };
