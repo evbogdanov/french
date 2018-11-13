@@ -3,6 +3,7 @@ import FormRow from '../FormRow/FormRow';
 import Input from '../Input/Input';
 import InputSubmit from '../InputSubmit/InputSubmit';
 import FormAlert from '../FormAlert/FormAlert';
+import Suggestions from '../Suggestions/Suggestions';
 import * as api from '../../api';
 
 /*
@@ -12,14 +13,11 @@ import * as api from '../../api';
  */
 class AddRelatedWords extends Component {
   state = {
-    text: '', // search for words starting with that text
+    text: '', // search for related words starting with that text
     loading: false,
-    loadingSuggestions: false,
     words: [
       // {id, text}
     ],
-    suggestions: [],
-    noSuggestions: false,
     successText: '',
     dangerText: '',
   }
@@ -28,31 +26,9 @@ class AddRelatedWords extends Component {
     const text = event.target.value;
     this.setState({
       text: text,
-      suggestions: [],
-      noSuggestions: false,
-      loadingSuggestions: true,
       successText: '',
       dangerText: '',
     });
-
-    if (text === '') {
-      this.setState({loadingSuggestions: false});
-      return;
-    }
-
-    api.get('/v1/words/suggestions', {params: {text}})
-      .then(res => {
-        const suggestions = res.data.data;
-        this.setState({
-          suggestions,
-          noSuggestions: suggestions.length === 0,
-          loadingSuggestions: false,
-        });
-      })
-      .catch(err => {
-        console.log(err);
-        this.setState({loadingSuggestions: false});
-      });
   }
 
   addWord = (id, text) => {
@@ -62,7 +38,6 @@ class AddRelatedWords extends Component {
       return {
         words,
         text: '',
-        suggestions: []
       };
     });
   }
@@ -120,33 +95,7 @@ class AddRelatedWords extends Component {
       );
     }
 
-    let suggestions = null,
-        invalidTextFeedback = '';
-    if (this.state.noSuggestions) {
-      invalidTextFeedback = "Your search doesn't match any words";
-    }
-    else if (this.state.suggestions.length) {
-      const items = this.state.suggestions.map(s => (
-        <li key={s.id} onClick={() => this.addWord(s.id, s.text)}>{s.text}</li>
-      ));
-      suggestions = (
-        <FormRow>
-          <ul className="col-sm-10">
-            {items}
-          </ul>
-        </FormRow>
-      );
-    }
-
     const wordsValue = this.state.words.map(w => w.text).join(', ');
-
-    let [loading, loadingText] = [false, ''];
-    if (this.state.loading) {
-      [loading, loadingText] = [true, 'Adding'];
-    }
-    else if (this.state.loadingSuggestions) {
-      [loading, loadingText] = [true, 'Searching'];
-    }
 
     let [alertSuccess, alertDanger] = [null, null];
     const [successText, dangerText] = [this.state.successText, this.state.dangerText];
@@ -178,13 +127,15 @@ class AddRelatedWords extends Component {
                  label="Search"
                  placeholder="Search for related words"
                  value={this.state.text}
-                 handleChange={this.handleTextChange}
-                 isInvalid={this.state.noSuggestions}
-                 invalidFeedback={invalidTextFeedback} />
-          {suggestions}
+                 handleChange={this.handleTextChange} />
+          <FormRow>
+            <Suggestions text={this.state.text}
+                         model="words"
+                         handleSuggestionClick={this.addWord} />
+          </FormRow>
           <InputSubmit text="Add related words"
-                       loadingText={loadingText}
-                       loading={loading} />
+                       loadingText="Adding"
+                       loading={this.state.loading} />
         </fieldset>
         {alertSuccess}
         {alertDanger}

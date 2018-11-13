@@ -6,6 +6,7 @@ import * as api from '../../api';
  * - text (aka query)
  * - model ("words" or "phrases", URL depends on it)
  * - handleSuggestionClick(id, text)
+ * - extraClassName (optional)
  */
 class Suggestions extends Component {
   state = {
@@ -45,15 +46,22 @@ class Suggestions extends Component {
   }
 
   render() {
+    const classes = ['Suggestions'];
+    if (this.props.extraClassName) {
+      classes.push(this.props.extraClassName);
+    }
+    const className = classes.join(' ');
+
     const suggestions = this.state.suggestions.map(s => (
       <li key={s.id}
+          className="Suggestions__item"
           onClick={() => this.props.handleSuggestionClick(s.id, s.text)}>
         {s.text}
       </li>
     ));
 
     return (
-      <ul>
+      <ul className={className}>
         {suggestions}
       </ul>
     );

@@ -32,7 +32,8 @@ const EditRelatedWords = (props) => {
       </div>
       <Suggestions text={props.suggestionsText}
                    model="words"
-                   handleSuggestionClick={props.addWord} />
+                   handleSuggestionClick={props.addWord}
+                   extraClassName="Suggestions_sm"/>
     </>
   );
 };
