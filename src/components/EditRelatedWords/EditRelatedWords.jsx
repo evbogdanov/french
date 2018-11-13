@@ -10,23 +10,25 @@ import Suggestions from '../Suggestions/Suggestions';
  * - onSuggestionsTextChange
  */
 const EditRelatedWords = (props) => {
-  const words = props.relatedWords.map(w => (
-    <li key={w.id}>
-      <span>{w.text}</span>
-      <button className="btn btn-sm btn-link"
-              onClick={() => props.removeWord(w.id)}>Remove</button>
-    </li>
-  ));
+  let relatedWords = null;
+  if (props.relatedWords.length > 0) {
+    const words = props.relatedWords.map(w => (
+      <li key={w.id}>
+        <span>{w.text}</span>
+        <button className="btn btn-sm btn-link"
+                onClick={() => props.removeWord(w.id)}>Remove</button>
+      </li>
+    ));
+    relatedWords = <ul>{words}</ul>;
+  }
 
   return (
     <>
-      <ul>
-        {words}
-      </ul>
+      {relatedWords}
       <div className="form-group">
         <input className="form-control form-control-sm"
                type="text"
-               placeholder="Search for a related word"
+               placeholder="Search for related words"
                value={props.suggestionsText}
                onChange={props.onSuggestionsTextChange} />
       </div>

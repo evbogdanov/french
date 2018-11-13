@@ -26,7 +26,7 @@ class WordCard extends Component {
 
     if (this.state.editing) {
       return (
-        <EditCard onClickCancel={this.cancelEditing}>
+        <EditCard>
           <EditWord word={w}
                     cancelEditing={this.cancelEditing} />
         </EditCard>

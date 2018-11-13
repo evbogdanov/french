@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SharedForm from '../SharedForm/SharedForm';
-import FormDelete from '../FormDelete/FormDelete';
+import FormDeleteAndCancel from '../FormDeleteAndCancel/FormDeleteAndCancel';
 import * as api from '../../api';
 import * as actions from '../../store/actions';
 
@@ -97,9 +97,11 @@ class EditWord extends Component {
                     loading={this.state.loading}
                     successText={this.state.successText}
                     dangerText={this.state.dangerText} />
-        <FormDelete handleSubmit={this.handleSubmitDelete}
-                    dangerText={this.state.dangerTextDelete}
-                    loading={this.state.loadingDelete} />
+        <FormDeleteAndCancel handleSubmit={this.handleSubmitDelete}
+                             dangerText={this.state.dangerTextDelete}
+                             loading={this.state.loadingDelete}
+                             cancelEditing={this.props.cancelEditing}
+                             cancelText="Back to word" />
       </>
     );
   }

@@ -26,7 +26,7 @@ class PhraseCard extends Component {
 
     if (this.state.editing) {
       return (
-        <EditCard onClickCancel={this.cancelEditing}>
+        <EditCard>
           <EditPhrase phrase={p}
                       cancelEditing={this.cancelEditing} />
         </EditCard>

@@ -5,7 +5,6 @@ import FormRow from '../FormRow/FormRow';
 /*
  * Props
  * - simple (optional)
- * - small (optional)
  * - text (optional)
  * - loadingText (optional)
  * - loading (optional)
@@ -25,7 +24,7 @@ const InputSubmit = (props) => {
 
   if (props.simple) {
     const btnText = loader || text,
-          sm = props.small ? ' btn-sm' : '';
+          sm = props.simple ? ' btn-sm' : '';
     return (
       <div className="form-group InputSubmit">
         <button type="submit"
