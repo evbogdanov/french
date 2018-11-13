@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SharedForm from '../SharedForm/SharedForm';
-import AddWords from '../AddWords/AddWords';
+import AddRelatedWords from '../AddRelatedWords/AddRelatedWords';
 import * as api from '../../api';
 
 class NewPhrase extends Component {
@@ -60,9 +60,9 @@ class NewPhrase extends Component {
   }
 
   render() {
-    const addWords = !this.state.createdId ? null : (
-      <AddWords phraseId={this.state.createdId}
-                phraseText={this.state.createdText} />
+    const addRelatedWords = !this.state.createdId ? null : (
+      <AddRelatedWords phraseId={this.state.createdId}
+                       phraseText={this.state.createdText} />
     );
 
     return (
@@ -80,7 +80,7 @@ class NewPhrase extends Component {
                     loading={this.state.loading}
                     successText={this.state.successText}
                     dangerText={this.state.dangerText} />
-        {addWords}
+        {addRelatedWords}
       </>
     );
   }

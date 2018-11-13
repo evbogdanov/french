@@ -10,7 +10,7 @@ import * as api from '../../api';
  * - phraseId
  * - phraseText
  */
-class AddWords extends Component {
+class AddRelatedWords extends Component {
   state = {
     text: '', // search for words starting with that text
     loading: false,
@@ -176,13 +176,13 @@ class AddWords extends Component {
           {buttonRemoveLast}
           <Input id="add-words-search-word"
                  label="Search"
-                 placeholder="Search for words"
+                 placeholder="Search for related words"
                  value={this.state.text}
                  handleChange={this.handleTextChange}
                  isInvalid={this.state.noSuggestions}
                  invalidFeedback={invalidTextFeedback} />
           {suggestions}
-          <InputSubmit text="Add words"
+          <InputSubmit text="Add related words"
                        loadingText={loadingText}
                        loading={loading} />
         </fieldset>
@@ -193,4 +193,4 @@ class AddWords extends Component {
   }
 }
 
-export default AddWords;
+export default AddRelatedWords;
