@@ -82,6 +82,12 @@ class EditPhrase extends Component {
   }
 
   addWord = (wordId, wordText) => {
+    const relatedWords = this.props.phrase.related_words || [];
+    if (relatedWords.some(w => w.id === wordId)) {
+      // Word already added
+      return;
+    }
+
     const phraseId = this.props.phrase.id;
     api.put(`/v1/phrases/${phraseId}/words/${wordId}`)
       .then(res => {
