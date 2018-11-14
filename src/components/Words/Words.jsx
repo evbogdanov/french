@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Heading from '../Heading/Heading';
 import SearchBox from '../SearchBox/SearchBox';
+import Suggestions from '../Suggestions/Suggestions';
 import CardColumns from '../CardColumns/CardColumns';
 import WordCard from '../WordCard/WordCard';
 import Loader from '../Loader/Loader';
@@ -10,8 +11,9 @@ import * as actions from '../../store/actions';
 
 class Words extends Component {
   state = {
-    searchQuery: '',
+    searchWordsText: '',
     loading: false,
+    hideSuggestions: false,
   }
 
   componentDidMount() {
@@ -28,34 +30,53 @@ class Words extends Component {
   }
 
   onSearchChange = (event) => {
-    this.setState({searchQuery: event.target.value});
+    this.setState({
+      hideSuggestions: false,
+      searchWordsText: event.target.value,
+    });
   }
 
   onSearchStart = () => {
-    console.log('Search words:', this.state.searchQuery);
+    this.setState({hideSuggestions: true});
+    console.log('Search words:', this.state.searchWordsText);
   }
 
   onSearchClear = () => {
-    this.setState({searchQuery: ''});
+    this.setState({searchWordsText: ''});
+  }
+
+  handleSuggestionClick = (wordId, wordText) => {
+    this.setState({
+      hideSuggestions: true,
+      searchWordsText: wordText,
+    });
   }
 
   render() {
     const loader = this.state.loading ? <Loader/> : null;
 
-    const cards = this.props.words.map(
-      w => <WordCard key={w.id}
-                     word={w}
-                     isAuthenticated={this.props.isAuthenticated} />
+    const cards = this.props.words.map(w => (
+      <WordCard key={w.id}
+                word={w}
+                isAuthenticated={this.props.isAuthenticated} />
+    ));
+
+    const suggestions = this.state.hideSuggestions ? null : (
+      <Suggestions text={this.state.searchWordsText}
+                   model="words"
+                   handleSuggestionClick={this.handleSuggestionClick}
+                   extraClassName="Suggestions_search" />
     );
 
     return (
       <>
         <Heading>Words</Heading>
         <SearchBox placeholder="Search words"
-                   value={this.state.searchQuery}
+                   value={this.state.searchWordsText}
                    onChange={this.onSearchChange}
                    onSearchStart={this.onSearchStart}
                    onClear={this.onSearchClear} />
+        {suggestions}
         <CardColumns>
           {cards}
         </CardColumns>
