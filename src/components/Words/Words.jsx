@@ -6,6 +6,7 @@ import Suggestions from '../Suggestions/Suggestions';
 import CardColumns from '../CardColumns/CardColumns';
 import WordCard from '../WordCard/WordCard';
 import Loader from '../Loader/Loader';
+import Pagination from '../Pagination/Pagination';
 import * as api from '../../api';
 import * as actions from '../../store/actions';
 
@@ -17,14 +18,32 @@ class Words extends Component {
   }
 
   componentDidMount() {
-    this.setState({loading: true});
-    api.get('/v1/words/search')
+    this.searchWords();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.location.search !== prevProps.location.search) {
+      this.searchWords();
+    }
+  }
+
+  searchWords = () => {
+    this.setState({
+      loading: true,
+      hideSuggestions: true,
+    });
+    const queryString = this.props.location.search;
+    api.get(`/v1/words/search${queryString}`)
       .then(res => {
-        this.setState({loading: false});
+        const {text} = api.parseQueryString(queryString);
+        this.setState({
+          loading: false,
+          searchWordsText: text,
+        });
         this.props.setWords(res.data.data);
       })
       .catch(err => {
-        console.log('Error!', err);
+        console.log(err);
         this.setState({loading: false});
       });
   }
@@ -37,8 +56,12 @@ class Words extends Component {
   }
 
   onSearchStart = () => {
-    this.setState({hideSuggestions: true});
-    console.log('Search words:', this.state.searchWordsText);
+    this.props.history.push({
+      search: api.toQueryString({
+        text: this.state.searchWordsText,
+        offset: 0,
+      })
+    });
   }
 
   onSearchClear = () => {
@@ -49,6 +72,33 @@ class Words extends Component {
     this.setState({
       hideSuggestions: true,
       searchWordsText: wordText,
+    });
+  }
+
+  previousPage = () => {
+    const searchQueryString = this.props.location.search,
+          {text, offset} = api.parseQueryString(searchQueryString);
+
+    if (offset === 0) return;
+    let nextOffset = offset - api.WORDS_PER_PAGE;
+    if (nextOffset < 0) nextOffset = 0;
+
+    this.props.history.push({
+      search: api.toQueryString({
+        text,
+        offset: nextOffset,
+      })
+    });
+  }
+
+  nextPage = () => {
+    const searchQueryString = this.props.location.search,
+          {text, offset} = api.parseQueryString(searchQueryString);
+    this.props.history.push({
+      search: api.toQueryString({
+        text,
+        offset: offset + api.WORDS_PER_PAGE,
+      })
     });
   }
 
@@ -81,6 +131,8 @@ class Words extends Component {
           {cards}
         </CardColumns>
         {loader}
+        <Pagination onPreviousClick={this.previousPage}
+                    onNextClick={this.nextPage} />
       </>
     );
   }
