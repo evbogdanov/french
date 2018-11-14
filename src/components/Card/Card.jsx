@@ -41,8 +41,10 @@ const Card = (props) => {
   let edit = null;
   if (props.canEdit) {
     edit = (
-      <span className="Card__edit-btn"
-            onClick={props.onClickEdit}>Edit</span>
+      <button className="btn btn-link btn-sm"
+              onClick={props.onClickEdit}>
+        Edit
+      </button>
     );
   }
 
@@ -57,11 +59,9 @@ const Card = (props) => {
         {image}
         {notes}
         {props.extraBody}
-        <div className="card-text row Card__footer">
-          <div className="col-9 text-muted">{timeAgo}</div>
-          <div className="col-3 Card__edit">
-            {edit}
-          </div>
+        <div className="card-text row">
+          <div className="col-9 Card__date">{timeAgo}</div>
+          <div className="col-3 Card__edit">{edit}</div>
         </div>
       </div>
     </div>

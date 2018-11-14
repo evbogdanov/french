@@ -34,15 +34,15 @@
     margin-bottom: $card-spacer-y;
   }
 
-  &__footer {
-    font-size: $small-font-size;
+  &__date {
+    font-size: $font-size-sm;
+    color: $text-muted;
   }
 
   &__edit {
     text-align: right;
-    &-btn {
-      color: $blue;
-      cursor: pointer;
+    .btn {
+      padding: 0;
     }
   }
 }
