@@ -118,6 +118,16 @@ class Words extends Component {
                    extraClassName="Suggestions_search" />
     );
 
+    const {offset} = api.parseQueryString(this.props.location.search),
+          wordsLen = this.props.words.length,
+          pagination = (offset === 0 && wordsLen < api.WORDS_PER_PAGE) ? null : (
+            <Pagination onPreviousClick={this.previousPage}
+                        onNextClick={this.nextPage}
+                        hasPrevious={offset > 0}
+                        hasNext={wordsLen === api.WORDS_PER_PAGE}
+            />
+          );
+
     return (
       <>
         <Heading>Words</Heading>
@@ -131,8 +141,7 @@ class Words extends Component {
           {cards}
         </CardColumns>
         {loader}
-        <Pagination onPreviousClick={this.previousPage}
-                    onNextClick={this.nextPage} />
+        {pagination}
       </>
     );
   }
