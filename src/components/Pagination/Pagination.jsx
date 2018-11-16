@@ -18,11 +18,11 @@ const Pagination = (props) => {
       <ul className="pagination justify-content-center">
         <li className={`page-item${previousDisabled}`}
             onClick={onPreviousClick}>
-          <span className="page-link">Previous</span>
+          <span className="page-link">Newer</span>
         </li>
         <li className={`page-item${nextDisabled}`}
             onClick={onNextClick}>
-          <span className="page-link">Next</span>
+          <span className="page-link">Older</span>
         </li>
       </ul>
     </nav>
