@@ -6,6 +6,7 @@ import CardColumns from '../CardColumns/CardColumns';
 import PhraseCard from '../PhraseCard/PhraseCard';
 import SearchBox from '../SearchBox/SearchBox';
 import Loader from '../Loader/Loader';
+import Pagination from '../Pagination/Pagination';
 import * as api from '../../api';
 import * as actions from '../../store/actions';
 
@@ -16,20 +17,36 @@ class Phrases extends Component {
   }
 
   componentDidMount() {
-    this.setState({loading: true});
-    api.get('/v1/phrases/search')
-      .then(res => {
-        this.setState({loading: false});
-        this.props.setPhrases(res.data.data);
-      })
-      .catch(err => {
-        console.log('Error!', err);
-        this.setState({loading: false});
-      });
+    this.searchPhrases();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.location.search !== prevProps.location.search) {
+      this.searchPhrases();
+    }
   }
 
   componentWillUnmount() {
     this.props.setSearchPhrasesText('');
+  }
+
+  searchPhrases = () => {
+    this.setState({
+      loading: true,
+      hideSuggestions: true,
+    });
+    const queryString = this.props.location.search;
+    api.get(`/v1/phrases/search${queryString}`)
+      .then(res => {
+        const {text} = api.parseQueryString(queryString);
+        this.setState({loading: false});
+        this.props.setSearchPhrasesText(text);
+        this.props.setPhrases(res.data.data);
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({loading: false});
+      });
   }
 
   onSearchChange = (event) => {
@@ -38,8 +55,12 @@ class Phrases extends Component {
   }
 
   onSearchStart = () => {
-    this.setState({hideSuggestions: true});
-    console.log('Search phrases:', this.props.searchPhrasesText);
+    this.props.history.push({
+      search: api.toQueryString({
+        text: this.props.searchPhrasesText,
+        offset: 0,
+      })
+    });
   }
 
   onSearchClear = () => {
@@ -47,8 +68,35 @@ class Phrases extends Component {
   }
 
   handleSuggestionClick = (phraseId, phraseText) => {
-    this.props.setSearchPhrasesText(phraseText);
     this.setState({hideSuggestions: true});
+    this.props.setSearchPhrasesText(phraseText);
+  }
+
+  previousPage = () => {
+    const searchQueryString = this.props.location.search,
+          {text, offset} = api.parseQueryString(searchQueryString);
+
+    if (offset === 0) return;
+    let nextOffset = offset - api.PHRASES_PER_PAGE;
+    if (nextOffset < 0) nextOffset = 0;
+
+    this.props.history.push({
+      search: api.toQueryString({
+        text,
+        offset: nextOffset,
+      })
+    });
+  }
+
+  nextPage = () => {
+    const searchQueryString = this.props.location.search,
+          {text, offset} = api.parseQueryString(searchQueryString);
+    this.props.history.push({
+      search: api.toQueryString({
+        text,
+        offset: offset + api.PHRASES_PER_PAGE,
+      })
+    });
   }
 
   render() {
@@ -68,6 +116,16 @@ class Phrases extends Component {
                    extraClassName="Suggestions_search" />
     );
 
+    const {offset} = api.parseQueryString(this.props.location.search),
+          phrasesLen = this.props.phrases.length,
+          pagination = (offset === 0 && phrasesLen < api.PHRASES_PER_PAGE) ? null : (
+            <Pagination onPreviousClick={this.previousPage}
+                        onNextClick={this.nextPage}
+                        hasPrevious={offset > 0}
+                        hasNext={phrasesLen === api.PHRASES_PER_PAGE}
+            />
+          );
+
     return (
       <>
         <Heading>Phrases</Heading>
@@ -81,6 +139,7 @@ class Phrases extends Component {
           {cards}
         </CardColumns>
         {loader}
+        {pagination}
       </>
     );
   }
