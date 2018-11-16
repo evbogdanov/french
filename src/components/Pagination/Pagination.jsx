@@ -1,17 +1,24 @@
 import React from 'react';
+import * as api from '../../api';
 
 /*
  * Props:
  * - onPreviousClick
  * - onNextClick
- * - hasPrevious
- * - hasNext
+ * - cardsOnPage
+ * - offset
  */
 const Pagination = (props) => {
-  const previousDisabled = props.hasPrevious ? '' : ' disabled',
-        nextDisabled = props.hasNext ? '' : ' disabled',
-        onPreviousClick = props.hasPrevious ? props.onPreviousClick : null,
-        onNextClick = props.hasNext ? props.onNextClick : null;
+  if (props.offset === 0 && props.cardsOnPage < api.CARDS_PER_PAGE) {
+    return null;
+  }
+
+  const hasPrevious = props.offset > 0,
+        hasNext = props.cardsOnPage === api.CARDS_PER_PAGE,
+        previousDisabled = hasPrevious ? '' : ' disabled',
+        nextDisabled = hasNext ? '' : ' disabled',
+        onPreviousClick = hasPrevious ? props.onPreviousClick : null,
+        onNextClick = hasNext ? props.onNextClick : null;
 
   return (
     <nav aria-label="Pagination">

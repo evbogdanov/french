@@ -76,29 +76,14 @@ class Words extends Component {
   }
 
   previousPage = () => {
-    const searchQueryString = this.props.location.search,
-          {text, offset} = api.parseQueryString(searchQueryString);
-
-    if (offset === 0) return;
-    let nextOffset = offset - api.WORDS_PER_PAGE;
-    if (nextOffset < 0) nextOffset = 0;
-
     this.props.history.push({
-      search: api.toQueryString({
-        text,
-        offset: nextOffset,
-      })
+      search: api.previousQueryString(this.props.location.search)
     });
   }
 
   nextPage = () => {
-    const searchQueryString = this.props.location.search,
-          {text, offset} = api.parseQueryString(searchQueryString);
     this.props.history.push({
-      search: api.toQueryString({
-        text,
-        offset: offset + api.WORDS_PER_PAGE,
-      })
+      search: api.nextQueryString(this.props.location.search)
     });
   }
 
@@ -118,15 +103,13 @@ class Words extends Component {
                    extraClassName="Suggestions_search" />
     );
 
-    const {offset} = api.parseQueryString(this.props.location.search),
-          wordsLen = this.props.words.length,
-          pagination = (offset === 0 && wordsLen < api.WORDS_PER_PAGE) ? null : (
-            <Pagination onPreviousClick={this.previousPage}
-                        onNextClick={this.nextPage}
-                        hasPrevious={offset > 0}
-                        hasNext={wordsLen === api.WORDS_PER_PAGE}
-            />
-          );
+    const {offset} = api.parseQueryString(this.props.location.search);
+    const pagination = (
+      <Pagination onPreviousClick={this.previousPage}
+                  onNextClick={this.nextPage}
+                  cardsOnPage={this.props.words.length}
+                  offset={offset} />
+    );
 
     return (
       <>

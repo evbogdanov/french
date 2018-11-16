@@ -6,14 +6,6 @@ axios.defaults.baseURL = API_URL;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-/// Pagination
-////////////////////////////////////////////////////////////////////////////////
-
-export const WORDS_PER_PAGE = 30;
-export const PHRASES_PER_PAGE = 30;
-
-
-////////////////////////////////////////////////////////////////////////////////
 /// Handle query strings
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -25,6 +17,35 @@ export const parseQueryString = (queryString) => {
 };
 
 export const toQueryString = qs.stringify;
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// Pagination
+////////////////////////////////////////////////////////////////////////////////
+
+export const CARDS_PER_PAGE = 30;
+
+export const previousQueryString = currentQueryString => {
+  const {text, offset} = parseQueryString(currentQueryString);
+
+  let nextOffset = offset - CARDS_PER_PAGE;
+  if (nextOffset < 0) {
+    nextOffset = 0;
+  };
+
+  return toQueryString({
+    text,
+    offset: nextOffset,
+  });
+};
+
+export const nextQueryString = currentQueryString => {
+  const {text, offset} = parseQueryString(currentQueryString);
+  return toQueryString({
+    text,
+    offset: offset + CARDS_PER_PAGE,
+  });
+};
 
 
 ////////////////////////////////////////////////////////////////////////////////
