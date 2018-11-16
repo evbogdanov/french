@@ -25,7 +25,7 @@ export const toQueryString = qs.stringify;
 
 export const CARDS_PER_PAGE = 30;
 
-export const previousQueryString = currentQueryString => {
+export const prevQueryString = currentQueryString => {
   const {text, offset} = parseQueryString(currentQueryString);
 
   let nextOffset = offset - CARDS_PER_PAGE;

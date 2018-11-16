@@ -3,7 +3,7 @@ import * as api from '../../api';
 
 /*
  * Props:
- * - onPreviousClick
+ * - onPrevClick
  * - onNextClick
  * - cardsOnPage
  * - offset
@@ -13,18 +13,18 @@ const Pagination = (props) => {
     return null;
   }
 
-  const hasPrevious = props.offset > 0,
+  const hasPrev = props.offset > 0,
         hasNext = props.cardsOnPage === api.CARDS_PER_PAGE,
-        previousDisabled = hasPrevious ? '' : ' disabled',
+        prevDisabled = hasPrev ? '' : ' disabled',
         nextDisabled = hasNext ? '' : ' disabled',
-        onPreviousClick = hasPrevious ? props.onPreviousClick : null,
+        onPrevClick = hasPrev ? props.onPrevClick : null,
         onNextClick = hasNext ? props.onNextClick : null;
 
   return (
     <nav aria-label="Pagination">
       <ul className="pagination justify-content-center">
-        <li className={`page-item${previousDisabled}`}
-            onClick={onPreviousClick}>
+        <li className={`page-item${prevDisabled}`}
+            onClick={onPrevClick}>
           <span className="page-link">Newer</span>
         </li>
         <li className={`page-item${nextDisabled}`}

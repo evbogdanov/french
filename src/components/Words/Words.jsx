@@ -75,9 +75,9 @@ class Words extends Component {
     });
   }
 
-  previousPage = () => {
+  prevPage = () => {
     this.props.history.push({
-      search: api.previousQueryString(this.props.location.search)
+      search: api.prevQueryString(this.props.location.search)
     });
   }
 
@@ -105,7 +105,7 @@ class Words extends Component {
 
     const {offset} = api.parseQueryString(this.props.location.search);
     const pagination = (
-      <Pagination onPreviousClick={this.previousPage}
+      <Pagination onPrevClick={this.prevPage}
                   onNextClick={this.nextPage}
                   cardsOnPage={this.props.words.length}
                   offset={offset} />
