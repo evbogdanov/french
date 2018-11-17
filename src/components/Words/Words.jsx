@@ -88,14 +88,6 @@ class Words extends Component {
   }
 
   render() {
-    const loader = this.state.loading ? <Loader/> : null;
-
-    const cards = this.props.words.map(w => (
-      <WordCard key={w.id}
-                word={w}
-                isAuthenticated={this.props.isAuthenticated} />
-    ));
-
     const suggestions = this.state.hideSuggestions ? null : (
       <Suggestions text={this.state.searchWordsText}
                    model="words"
@@ -103,9 +95,26 @@ class Words extends Component {
                    extraClassName="Suggestions_search" />
     );
 
+    let words;
+    if (this.state.loading) {
+      words = <Loader />;
+    }
+    else if (this.props.words.length > 0) {
+      const cards = this.props.words.map(w => (
+        <WordCard key={w.id}
+                  word={w}
+                  isAuthenticated={this.props.isAuthenticated} />
+      ));
+      words = <CardColumns>{cards}</CardColumns>;
+    }
+    else {
+      words = <p>No words found</p>;
+    }
+
     const {offset} = api.parseQueryString(this.props.location.search);
     const pagination = (
-      <Pagination onPrevClick={this.prevPage}
+      <Pagination loading={this.state.loading}
+                  onPrevClick={this.prevPage}
                   onNextClick={this.nextPage}
                   cardsOnPage={this.props.words.length}
                   offset={offset} />
@@ -120,10 +129,7 @@ class Words extends Component {
                    onSearchStart={this.onSearchStart}
                    onClear={this.onSearchClear} />
         {suggestions}
-        <CardColumns>
-          {cards}
-        </CardColumns>
-        {loader}
+        {words}
         {pagination}
       </>
     );

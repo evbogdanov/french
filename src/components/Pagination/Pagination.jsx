@@ -3,13 +3,15 @@ import * as api from '../../api';
 
 /*
  * Props:
+ * - loading
  * - onPrevClick
  * - onNextClick
  * - cardsOnPage
  * - offset
  */
 const Pagination = (props) => {
-  if (props.offset === 0 && props.cardsOnPage < api.CARDS_PER_PAGE) {
+  if (props.loading ||
+      (props.offset === 0 && props.cardsOnPage < api.CARDS_PER_PAGE)) {
     return null;
   }
 

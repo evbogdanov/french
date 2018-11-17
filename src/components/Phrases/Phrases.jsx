@@ -85,15 +85,6 @@ class Phrases extends Component {
   }
 
   render() {
-    const loader = this.state.loading ? <Loader/> : null;
-
-    const cards = this.props.phrases.map(p => (
-      <PhraseCard key={p.id}
-                  phrase={p}
-                  isAuthenticated={this.props.isAuthenticated}
-                  setSearchPhrasesText={this.props.setSearchPhrasesText} />
-    ));
-
     const suggestions = this.state.hideSuggestions ? null : (
       <Suggestions text={this.props.searchPhrasesText}
                    model="phrases"
@@ -101,9 +92,27 @@ class Phrases extends Component {
                    extraClassName="Suggestions_search" />
     );
 
+    let phrases;
+    if (this.state.loading) {
+      phrases = <Loader />;
+    }
+    else if (this.props.phrases.length > 0) {
+      const cards = this.props.phrases.map(p => (
+        <PhraseCard key={p.id}
+                    phrase={p}
+                    isAuthenticated={this.props.isAuthenticated}
+                    setSearchPhrasesText={this.props.setSearchPhrasesText} />
+      ));
+      phrases = <CardColumns>{cards}</CardColumns>;
+    }
+    else {
+      phrases = <p>No phrases found</p>;
+    }
+
     const {offset} = api.parseQueryString(this.props.location.search);
     const pagination = (
-      <Pagination onPrevClick={this.prevPage}
+      <Pagination loading={this.state.loading}
+                  onPrevClick={this.prevPage}
                   onNextClick={this.nextPage}
                   cardsOnPage={this.props.phrases.length}
                   offset={offset} />
@@ -118,10 +127,7 @@ class Phrases extends Component {
                    onSearchStart={this.onSearchStart}
                    onClear={this.onSearchClear} />
         {suggestions}
-        <CardColumns>
-          {cards}
-        </CardColumns>
-        {loader}
+        {phrases}
         {pagination}
       </>
     );
