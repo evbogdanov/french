@@ -31,16 +31,16 @@ class Phrases extends Component {
   }
 
   searchPhrases = () => {
+    const queryString = this.props.location.search,
+          {text} = api.parseQueryString(queryString);
     this.setState({
       loading: true,
       hideSuggestions: true,
     });
-    const queryString = this.props.location.search;
+    this.props.setSearchPhrasesText(text);
     api.get(`/v1/phrases/search${queryString}`)
       .then(res => {
-        const {text} = api.parseQueryString(queryString);
         this.setState({loading: false});
-        this.props.setSearchPhrasesText(text);
         this.props.setPhrases(res.data.data);
       })
       .catch(err => {
@@ -68,8 +68,12 @@ class Phrases extends Component {
   }
 
   handleSuggestionClick = (phraseId, phraseText) => {
-    this.setState({hideSuggestions: true});
-    this.props.setSearchPhrasesText(phraseText);
+    this.props.history.push({
+      search: api.toQueryString({
+        text: phraseText,
+        offset: 0,
+      })
+    });
   }
 
   prevPage = () => {

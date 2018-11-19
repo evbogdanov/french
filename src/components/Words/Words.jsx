@@ -28,18 +28,16 @@ class Words extends Component {
   }
 
   searchWords = () => {
+    const queryString = this.props.location.search,
+          {text} = api.parseQueryString(queryString);
     this.setState({
       loading: true,
       hideSuggestions: true,
+      searchWordsText: text,
     });
-    const queryString = this.props.location.search;
     api.get(`/v1/words/search${queryString}`)
       .then(res => {
-        const {text} = api.parseQueryString(queryString);
-        this.setState({
-          loading: false,
-          searchWordsText: text,
-        });
+        this.setState({loading: false});
         this.props.setWords(res.data.data);
       })
       .catch(err => {
@@ -69,9 +67,11 @@ class Words extends Component {
   }
 
   handleSuggestionClick = (wordId, wordText) => {
-    this.setState({
-      hideSuggestions: true,
-      searchWordsText: wordText,
+    this.props.history.push({
+      search: api.toQueryString({
+        text: wordText,
+        offset: 0,
+      })
     });
   }
 
