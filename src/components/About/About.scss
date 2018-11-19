@@ -1,2 +1,14 @@
-// .About {
-// }
+.About {
+  &__image {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-top: 3rem;
+  }
+
+  p {
+    @include media-breakpoint-up(lg) {
+      font-size: $lead-font-size;
+    }
+  }
+}
