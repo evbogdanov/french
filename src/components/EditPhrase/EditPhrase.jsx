@@ -5,6 +5,7 @@ import FormDeleteAndCancel from '../FormDeleteAndCancel/FormDeleteAndCancel';
 import EditRelatedWords from '../EditRelatedWords/EditRelatedWords';
 import * as api from '../../api';
 import * as actions from '../../store/actions';
+import makeTrashable from 'trashable';
 
 /*
  * Props:
@@ -27,6 +28,13 @@ class EditPhrase extends Component {
     suggestionsText: '',
   }
 
+  componentWillUnmount() {
+    if (this.trashableRequestEdit) this.trashableRequestEdit.trash();
+    if (this.trashableRequestDelete) this.trashableRequestDelete.trash();
+    if (this.trashableRequestAddWord) this.trashableRequestAddWord.trash();
+    if (this.trashableRequestRemoveWord) this.trashableRequestRemoveWord.trash();
+  }
+
   handleInputChange = (event, inputName) => {
     const nextState = {
       successText: '',
@@ -43,8 +51,11 @@ class EditPhrase extends Component {
       successText: '',
       dangerText: '',
     });
-    api.put(`/v1/phrases/${this.props.phrase.id}`, this.state)
-      .then(res => {
+    this.trashableRequestEdit = makeTrashable(
+      api.put(`/v1/phrases/${this.props.phrase.id}`, this.state)
+    );
+    this.trashableRequestEdit
+      .then(() => {
         this.props.editPhrase(
           this.props.phrase.id,
           this.state.text,
@@ -53,8 +64,8 @@ class EditPhrase extends Component {
         );
         this.props.cancelEditing();
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        console.log(error);
         this.setState({
           loading: false,
           dangerText: 'Server error',
@@ -68,12 +79,15 @@ class EditPhrase extends Component {
       loadingDelete: true,
       dangerTextDelete: '',
     });
-    api.del(`/v1/phrases/${this.props.phrase.id}`)
-      .then(res => {
+    this.trashableRequestDelete = makeTrashable(
+      api.del(`/v1/phrases/${this.props.phrase.id}`)
+    );
+    this.trashableRequestDelete
+      .then(() => {
         this.props.deletePhraseById(this.props.phrase.id);
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        console.log(error);
         this.setState({
           loadingDelete: false,
           dangerTextDelete: "Couldn't delete"
@@ -89,24 +103,30 @@ class EditPhrase extends Component {
     }
 
     const phraseId = this.props.phrase.id;
-    api.put(`/v1/phrases/${phraseId}/words/${wordId}`)
-      .then(res => {
+    this.trashableRequestAddWord = makeTrashable(
+      api.put(`/v1/phrases/${phraseId}/words/${wordId}`)
+    );
+    this.trashableRequestAddWord
+      .then(() => {
         this.setState({suggestionsText: ''});
         this.props.addRelatedWord(phraseId, wordId, wordText);
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        console.log(error);
       });
   }
 
   removeWord = (wordId) => {
     const phraseId = this.props.phrase.id;
-    api.del(`/v1/phrases/${phraseId}/words/${wordId}`)
-      .then(res => {
+    this.trashableRequestRemoveWord = makeTrashable(
+      api.del(`/v1/phrases/${phraseId}/words/${wordId}`)
+    );
+    this.trashableRequestRemoveWord
+      .then(() => {
         this.props.removeRelatedWord(phraseId, wordId);
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        console.log(error);
       });
   }
 

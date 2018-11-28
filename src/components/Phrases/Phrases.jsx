@@ -9,6 +9,7 @@ import Loader from '../Loader/Loader';
 import Pagination from '../Pagination/Pagination';
 import * as api from '../../api';
 import * as actions from '../../store/actions';
+import makeTrashable from 'trashable';
 
 class Phrases extends Component {
   state = {
@@ -27,6 +28,7 @@ class Phrases extends Component {
   }
 
   componentWillUnmount() {
+    if (this.trashableRequest) this.trashableRequest.trash();
     this.props.setSearchPhrasesText('');
   }
 
@@ -38,13 +40,16 @@ class Phrases extends Component {
       hideSuggestions: true,
     });
     this.props.setSearchPhrasesText(text);
-    api.get(`/v1/phrases/search${queryString}`)
-      .then(res => {
+    this.trashableRequest = makeTrashable(
+      api.get(`/v1/phrases/search${queryString}`)
+    );
+    this.trashableRequest
+      .then(response => {
         this.setState({loading: false});
-        this.props.setPhrases(res.data.data);
+        this.props.setPhrases(response.data.data);
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        console.log(error);
         this.setState({loading: false});
       });
   }

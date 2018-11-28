@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Heading from '../Heading/Heading';
 import { Link } from 'react-router-dom';
 import * as api from '../../api';
+import makeTrashable from 'trashable';
 
 class About extends Component {
   state = {
@@ -12,17 +13,24 @@ class About extends Component {
   }
 
   componentDidMount() {
-    api.get('/v1/stats/count')
-      .then(res => {
-        const count = res.data.data;
+    this.trashableRequest = makeTrashable(
+      api.get('/v1/stats/count')
+    );
+    this.trashableRequest
+      .then(response => {
+        const count = response.data.data;
         this.setState({
           countWords: count.words,
           countPhrases: count.phrases,
         });
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        console.log(error);
       });
+  }
+
+  componentWillUnmount() {
+    if (this.trashableRequest) this.trashableRequest.trash();
   }
 
   render() {

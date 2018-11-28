@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as api from '../../api';
+import makeTrashable from 'trashable';
 
 /*
  * Props:
@@ -23,14 +24,17 @@ class Suggestions extends Component {
       return;
     }
 
-    api.get(`/v1/${this.props.model}/suggestions`, {params: {text}})
-      .then(res => {
+    this.trashableRequest = makeTrashable(
+      api.get(`/v1/${this.props.model}/suggestions`, {params: {text}})
+    );
+    this.trashableRequest
+      .then(response => {
         this.setState({
-          suggestions: res.data.data,
+          suggestions: response.data.data,
         });
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        console.log(error);
       });
   }
 
@@ -43,6 +47,10 @@ class Suggestions extends Component {
       return;
     }
     this.getSuggestions();
+  }
+
+  componentWillUnmount() {
+    if (this.trashableRequest) this.trashableRequest.trash();
   }
 
   render() {

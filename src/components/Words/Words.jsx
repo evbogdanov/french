@@ -9,6 +9,7 @@ import Loader from '../Loader/Loader';
 import Pagination from '../Pagination/Pagination';
 import * as api from '../../api';
 import * as actions from '../../store/actions';
+import makeTrashable from 'trashable';
 
 class Words extends Component {
   state = {
@@ -27,6 +28,10 @@ class Words extends Component {
     }
   }
 
+  componentWillUnmount() {
+    if (this.trashableRequest) this.trashableRequest.trash();
+  }
+
   searchWords = () => {
     const queryString = this.props.location.search,
           {text} = api.parseQueryString(queryString);
@@ -35,13 +40,16 @@ class Words extends Component {
       hideSuggestions: true,
       searchWordsText: text,
     });
-    api.get(`/v1/words/search${queryString}`)
-      .then(res => {
+    this.trashableRequest = makeTrashable(
+      api.get(`/v1/words/search${queryString}`)
+    );
+    this.trashableRequest
+      .then(response => {
         this.setState({loading: false});
-        this.props.setWords(res.data.data);
+        this.props.setWords(response.data.data);
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        console.log(error);
         this.setState({loading: false});
       });
   }

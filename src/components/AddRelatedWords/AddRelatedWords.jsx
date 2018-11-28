@@ -5,6 +5,7 @@ import InputSubmit from '../InputSubmit/InputSubmit';
 import FormAlert from '../FormAlert/FormAlert';
 import Suggestions from '../Suggestions/Suggestions';
 import * as api from '../../api';
+import makeTrashable from 'trashable';
 
 /*
  * Props:
@@ -20,6 +21,10 @@ class AddRelatedWords extends Component {
     ],
     successText: '',
     dangerText: '',
+  }
+
+  componentWillUnmount() {
+    if (this.trashableRequest) this.trashableRequest.trash();
   }
 
   handleTextChange = (event) => {
@@ -64,16 +69,20 @@ class AddRelatedWords extends Component {
 
     const wordIds = this.state.words.map(w => w.id);
     this.setState({loading: true});
-    api.post(`/v1/phrases/${this.props.phraseId}/words`, {wordIds})
-      .then(res => {
+
+    this.trashableRequest = makeTrashable(
+      api.post(`/v1/phrases/${this.props.phraseId}/words`, {wordIds})
+    );
+    this.trashableRequest
+      .then(() => {
         this.setState({
           words: [],
           loading: false,
           successText: 'Related words added',
         });
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        console.log(error);
         this.setState({
           loading: false,
           dangerText: 'Server error',

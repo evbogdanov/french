@@ -4,6 +4,7 @@ import SharedForm from '../SharedForm/SharedForm';
 import FormDeleteAndCancel from '../FormDeleteAndCancel/FormDeleteAndCancel';
 import * as api from '../../api';
 import * as actions from '../../store/actions';
+import makeTrashable from 'trashable';
 
 /*
  * Props:
@@ -25,6 +26,11 @@ class EditWord extends Component {
     dangerTextDelete: '',
   }
 
+  componentWillUnmount() {
+    if (this.trashableRequestEdit) this.trashableRequestEdit.trash();
+    if (this.trashableRequestDelete) this.trashableRequestDelete.trash();
+  }
+
   handleInputChange = (event, inputName) => {
     const nextState = {
       successText: '',
@@ -41,8 +47,11 @@ class EditWord extends Component {
       successText: '',
       dangerText: '',
     });
-    api.put(`/v1/words/${this.props.word.id}`, this.state)
-      .then(res => {
+    this.trashableRequestEdit = makeTrashable(
+      api.put(`/v1/words/${this.props.word.id}`, this.state)
+    );
+    this.trashableRequestEdit
+      .then(() => {
         this.props.editWord(
           this.props.word.id,
           this.state.text,
@@ -52,8 +61,8 @@ class EditWord extends Component {
         );
         this.props.cancelEditing();
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        console.log(error);
         this.setState({
           loading: false,
           dangerText: 'Server error',
@@ -67,12 +76,15 @@ class EditWord extends Component {
       loadingDelete: true,
       dangerTextDelete: '',
     });
-    api.del(`/v1/words/${this.props.word.id}`)
-      .then(res => {
+    this.trashableRequestDelete = makeTrashable(
+      api.del(`/v1/words/${this.props.word.id}`)
+    );
+    this.trashableRequestDelete
+      .then(() => {
         this.props.deleteWordById(this.props.word.id);
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        console.log(error);
         this.setState({
           loadingDelete: false,
           dangerTextDelete: "Couldn't delete"

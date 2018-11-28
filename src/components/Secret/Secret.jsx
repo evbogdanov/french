@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Input from '../Input/Input';
 import InputSubmit from '../InputSubmit/InputSubmit';
 import * as api from '../../api';
+import makeTrashable from 'trashable';
 
 /*
  * Props:
@@ -13,6 +14,10 @@ class Secret extends Component {
     secret: api.getSecret(),
     isValid: false,
     isInvalid: false,
+  }
+
+  componentWillUnmount() {
+    if (this.trashableRequest) this.trashableRequest.trash();
   }
 
   handleSecretChange = (event) => {
@@ -33,14 +38,17 @@ class Secret extends Component {
       isInvalid: false,
     });
 
-    api.post('/v1/secrets')
-      .then(res => {
+    this.trashableRequest = makeTrashable(
+      api.post('/v1/secrets')
+    );
+    this.trashableRequest
+      .then(() => {
         this.setState({isValid: true});
         this.props.setAuthenticated();
         api.setAuthenticated();
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        console.log(error);
         this.setState({isInvalid: true});
         this.props.unsetAuthenticated();
         api.unsetAuthenticated();

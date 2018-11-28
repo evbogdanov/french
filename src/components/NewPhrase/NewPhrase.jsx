@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SharedForm from '../SharedForm/SharedForm';
 import AddRelatedWords from '../AddRelatedWords/AddRelatedWords';
 import * as api from '../../api';
+import makeTrashable from 'trashable';
 
 class NewPhrase extends Component {
   state = {
@@ -18,6 +19,10 @@ class NewPhrase extends Component {
     loading: false,
     successText: '',
     dangerText: '',
+  }
+
+  componentWillUnmount() {
+    if (this.trashableRequest) this.trashableRequest.trash();
   }
 
   handleInputChange = (event, inputName) => {
@@ -38,20 +43,23 @@ class NewPhrase extends Component {
       successText: '',
       dangerText: '',
     });
-    api.post('/v1/phrases', this.state)
-      .then(res => {
+    this.trashableRequest = makeTrashable(
+      api.post('/v1/phrases', this.state)
+    );
+    this.trashableRequest
+      .then(response => {
         this.setState((prevState, props) => ({
           text: '',
           image: '',
           notes: '',
-          createdId: res.data.data.id,
+          createdId: response.data.data.id,
           createdText: prevState.text,
           loading: false,
           successText: 'Phrase created',
         }));
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        console.log(error);
         this.setState({
           loading: false,
           dangerText: 'Server error',
