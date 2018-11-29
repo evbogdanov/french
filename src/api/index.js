@@ -82,33 +82,21 @@ export const unsetAuthenticated = () => {
 /// Wrapper around axios
 ////////////////////////////////////////////////////////////////////////////////
 
+const doRequest = (method, url, data) => {
+  const args = [url];
+
+  if (method === 'post' || method === 'put') {
+    args.push(data);
+  }
+
+  args.push({
+    headers: {'FR_SECRET': getSecret()},
+  });
+
+  return axios[method](...args);
+};
+
 export const get = axios.get;
-
-export const post = (url, data=null) => {
-  return axios.post(
-    url,
-    data,
-    {
-      headers: {'FR_SECRET': getSecret()},
-    }
-  );
-};
-
-export const put = (url, data=null) => {
-  return axios.put(
-    url,
-    data,
-    {
-      headers: {'FR_SECRET': getSecret()},
-    }
-  );
-};
-
-export const del = (url) => {
-  return axios.delete(
-    url,
-    {
-      headers: {'FR_SECRET': getSecret()},
-    }
-  );
-};
+export const post = (url, data=null) => doRequest('post', url, data);
+export const put = (url, data=null) => doRequest('put', url, data);
+export const del = url => doRequest('delete', url, null);
