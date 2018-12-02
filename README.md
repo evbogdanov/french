@@ -8,6 +8,12 @@
 npm start
 ```
 
+## Testing
+
+```
+npm test
+```
+
 ## Production
 
 ```
