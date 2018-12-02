@@ -6,23 +6,27 @@ import Alert from './Alert';
 configure({adapter: new Adapter()});
 
 describe('<Alert />', () => {
+  let wrapper;
+  beforeEach(() => {
+    wrapper = shallow(<Alert />);
+  });
+
   it('should be a Bootstrap .alert element', () => {
-    const wrapper = shallow(<Alert />);
     expect(wrapper.is('.alert')).toBe(true);
   });
 
   it('should support "success" type', () => {
-    const wrapper = shallow(<Alert type="success" />);
+    wrapper.setProps({type: 'success'});
     expect(wrapper.is('.alert-success')).toBe(true);
   });
 
   it('should support "danger" type', () => {
-    const wrapper = shallow(<Alert type="danger" />);
+    wrapper.setProps({type: 'danger'});
     expect(wrapper.is('.alert-danger')).toBe(true);
   });
 
   it('should render some text', () => {
-    const wrapper = shallow(<Alert text="some text" />);
+    wrapper.setProps({text: 'some text'});
     expect(wrapper.text()).toEqual('some text');
   });
 });
