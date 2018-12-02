@@ -15,12 +15,9 @@ describe('<Alert />', () => {
     expect(wrapper.is('.alert')).toBe(true);
   });
 
-  it('should support "success" type', () => {
+  it('should support "success" and "danger" types', () => {
     wrapper.setProps({type: 'success'});
     expect(wrapper.is('.alert-success')).toBe(true);
-  });
-
-  it('should support "danger" type', () => {
     wrapper.setProps({type: 'danger'});
     expect(wrapper.is('.alert-danger')).toBe(true);
   });
