@@ -1,4 +1,5 @@
 import React from 'react';
+import { toTimeAgo } from '../../utils';
 
 /*
  * Props:
@@ -32,11 +33,7 @@ const Card = (props) => {
     notes = <p className="card-text Card__notes">{props.notes}</p>;
   }
 
-  // TODO: handle weeks, months, years
-  const daysAgo = props.days_ago;
-  let timeAgo = 'today';
-  if (daysAgo === 1) timeAgo = 'yesterday';
-  if (daysAgo > 1) timeAgo = `${daysAgo} days ago`;
+  const timeAgo = toTimeAgo(props.days_ago);
 
   let edit = null;
   if (props.canEdit) {
