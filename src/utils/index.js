@@ -30,3 +30,37 @@ export const toTimeAgo = days => {
   const years = Math.floor(days / 365);
   return singularOrPlural('year', years);
 };
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// Debounce
+////////////////////////////////////////////////////////////////////////////////
+
+// https://css-tricks.com/debouncing-throttling-explained-examples/
+//
+// This is a simplified debounce function. Its primary use case is waiting for
+// the last letter typed in Suggestions component.
+//
+// TODO: switch to underscore / lodash in the future
+
+export const debounce = (func, wait) => {
+  let timeout = null;
+
+  const debounced = (...args) => {
+    const callMeLater = () => {
+      timeout = null;
+      func(...args);
+    };
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(callMeLater, wait);
+  };
+
+  debounced.cancel = () => {
+    clearTimeout(timeout);
+    timeout = null;
+  };
+
+  return debounced;
+};

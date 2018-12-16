@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as api from '../../api';
 import makeTrashable from 'trashable';
+import { debounce } from '../../utils';
 
 /*
  * Props:
@@ -10,19 +11,20 @@ import makeTrashable from 'trashable';
  * - extraClassName (optional)
  */
 class Suggestions extends Component {
-  state = {
-    suggestions: [
-      // {id, text}
-    ]
+  constructor(props) {
+    super(props);
+    this.state = {
+      suggestions: [
+        // {id, text}
+      ]
+    };
+    this.getSuggestionsEfficiently = debounce(this.getSuggestions, 300);
   }
 
   getSuggestions = () => {
-    const text = this.props.text;
     this.setState({suggestions: []});
-
-    if (!text) {
-      return;
-    }
+    const text = this.props.text;
+    if (!text) return;
 
     this.trashableRequest = makeTrashable(
       api.get(`/v1/${this.props.model}/suggestions`, {params: {text}})
@@ -39,17 +41,18 @@ class Suggestions extends Component {
   }
 
   componentDidMount() {
-    this.getSuggestions();
+    this.getSuggestionsEfficiently();
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.text === prevProps.text) {
       return;
     }
-    this.getSuggestions();
+    this.getSuggestionsEfficiently();
   }
 
   componentWillUnmount() {
+    this.getSuggestionsEfficiently.cancel();
     if (this.trashableRequest) this.trashableRequest.trash();
   }
 
