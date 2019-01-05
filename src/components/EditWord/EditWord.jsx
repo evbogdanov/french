@@ -5,7 +5,7 @@ import FormDeleteAndCancel from '../FormDeleteAndCancel/FormDeleteAndCancel';
 import * as api from '../../api';
 import * as actions from '../../store/actions';
 import makeTrashable from 'trashable';
-import { getNextStateForChangedInput } from '../../utils';
+import { getNextStateForChangedInput, selectProps } from '../../utils';
 
 /*
  * Props:
@@ -44,8 +44,9 @@ class EditWord extends Component {
       successText: '',
       dangerText: '',
     });
+    const selectedProps = selectProps(this.state, 'text', 'image', 'notes', 'gender');
     this.trashableRequestEdit = makeTrashable(
-      api.put(`/v1/words/${this.props.word.id}`, this.state)
+      api.put(`/v1/words/${this.props.word.id}`, selectedProps)
     );
     this.trashableRequestEdit
       .then(() => {

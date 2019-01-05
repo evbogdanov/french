@@ -6,7 +6,7 @@ import EditRelatedWords from '../EditRelatedWords/EditRelatedWords';
 import * as api from '../../api';
 import * as actions from '../../store/actions';
 import makeTrashable from 'trashable';
-import { getNextStateForChangedInput } from '../../utils';
+import { getNextStateForChangedInput, selectProps } from '../../utils';
 
 /*
  * Props:
@@ -48,8 +48,9 @@ class EditPhrase extends Component {
       successText: '',
       dangerText: '',
     });
+    const selectedProps = selectProps(this.state, 'text', 'image', 'notes');
     this.trashableRequestEdit = makeTrashable(
-      api.put(`/v1/phrases/${this.props.phrase.id}`, this.state)
+      api.put(`/v1/phrases/${this.props.phrase.id}`, selectedProps)
     );
     this.trashableRequestEdit
       .then(() => {

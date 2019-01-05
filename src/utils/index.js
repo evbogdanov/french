@@ -94,3 +94,15 @@ export const getNextStateForChangedInput = (event, inputName) => {
   nextState[inputName] = event.target.value;
   return nextState;
 };
+
+////////////////////////////////////////////////////////////////////////////////
+/// Get slice of properties from a given object
+////////////////////////////////////////////////////////////////////////////////
+
+export const selectProps = (obj, ...props) => {
+  const selected = {};
+  for (const prop of props) {
+    if (obj.hasOwnProperty(prop)) selected[prop] = obj[prop];
+  }
+  return selected;
+};

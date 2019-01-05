@@ -3,7 +3,11 @@ import SharedForm from '../SharedForm/SharedForm';
 import AddRelatedWords from '../AddRelatedWords/AddRelatedWords';
 import * as api from '../../api';
 import makeTrashable from 'trashable';
-import { getCustomErrorMessage, getNextStateForChangedInput } from '../../utils';
+import {
+  getCustomErrorMessage,
+  getNextStateForChangedInput,
+  selectProps
+} from '../../utils';
 
 class NewPhrase extends Component {
   state = {
@@ -40,8 +44,9 @@ class NewPhrase extends Component {
       successText: '',
       dangerText: '',
     });
+    const selectedProps = selectProps(this.state, 'text', 'image', 'notes');
     this.trashableRequest = makeTrashable(
-      api.post('/v1/phrases', this.state)
+      api.post('/v1/phrases', selectedProps)
     );
     this.trashableRequest
       .then(response => {

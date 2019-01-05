@@ -1,4 +1,4 @@
-import { toTimeAgo, debounce } from '.';
+import { toTimeAgo, debounce, selectProps } from '.';
 
 describe('utils', () => {
   it('should return days, weeks, months, years ago', () => {
@@ -21,7 +21,7 @@ describe('utils', () => {
       [364, '12 months ago'],
       [365, 'a year ago'],
       [729, 'a year ago'],
-      [730, '2 years ago'],
+      [730, '2 years ago']
     ];
     for (const [days, timeAgo] of tests) {
       expect(toTimeAgo(days)).toBe(timeAgo);
@@ -30,7 +30,7 @@ describe('utils', () => {
 
   it('should debounce', done => {
     let counter = 0;
-    const incr = () => counter += 1;
+    const incr = () => (counter += 1);
     const debouncedIncr = debounce(incr, 32);
     debouncedIncr();
     debouncedIncr();
@@ -43,7 +43,7 @@ describe('utils', () => {
 
   it('should cancel debounce', done => {
     let counter = 0;
-    const incr = () => counter += 1;
+    const incr = () => (counter += 1);
     const debouncedIncr = debounce(incr, 32);
     debouncedIncr();
     debouncedIncr.cancel();
@@ -51,5 +51,11 @@ describe('utils', () => {
       expect(counter).toBe(0);
       done();
     }, 96);
+  });
+
+  it('should select properties', () => {
+    const obj = { a: 1, b: 2, c: 3 };
+    const sel = selectProps(obj, 'b', 'c', 'd');
+    expect(sel).toEqual({ b: 2, c: 3 });
   });
 });
