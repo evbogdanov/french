@@ -3,6 +3,7 @@ import SharedForm from '../SharedForm/SharedForm';
 import AddRelatedWords from '../AddRelatedWords/AddRelatedWords';
 import * as api from '../../api';
 import makeTrashable from 'trashable';
+import { getCustomErrorMessage } from '../../utils';
 
 class NewPhrase extends Component {
   state = {
@@ -62,7 +63,7 @@ class NewPhrase extends Component {
         console.log(error);
         this.setState({
           loading: false,
-          dangerText: 'Server error',
+          dangerText: getCustomErrorMessage(error) || 'Server error'
         });
       });
   }

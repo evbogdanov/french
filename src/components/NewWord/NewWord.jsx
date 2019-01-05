@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SharedForm from '../SharedForm/SharedForm';
 import * as api from '../../api';
 import makeTrashable from 'trashable';
+import { getCustomErrorMessage } from '../../utils';
 
 class NewWord extends Component {
   state = {
@@ -53,7 +54,7 @@ class NewWord extends Component {
         console.log(error);
         this.setState({
           loading: false,
-          dangerText: 'Server error',
+          dangerText: getCustomErrorMessage(error) || 'Server error'
         });
       });
   }

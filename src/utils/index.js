@@ -31,7 +31,6 @@ export const toTimeAgo = days => {
   return singularOrPlural('year', years);
 };
 
-
 ////////////////////////////////////////////////////////////////////////////////
 /// Debounce
 ////////////////////////////////////////////////////////////////////////////////
@@ -63,4 +62,22 @@ export const debounce = (func, wait) => {
   };
 
   return debounced;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+/// Helper: did the server return a custom error?
+////////////////////////////////////////////////////////////////////////////////
+
+// This should match `ERROR_OTHER` const in `french-api` repo
+const CUSTOM_ERROR_CODE = 418;
+
+export const getCustomErrorMessage = error => {
+  if (
+    error.hasOwnProperty('response') &&
+    error.response.hasOwnProperty('status') &&
+    error.response.status === CUSTOM_ERROR_CODE
+  ) {
+    return error.response.data.message;
+  }
+  return '';
 };
