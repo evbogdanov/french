@@ -5,6 +5,7 @@ import FormDeleteAndCancel from '../FormDeleteAndCancel/FormDeleteAndCancel';
 import * as api from '../../api';
 import * as actions from '../../store/actions';
 import makeTrashable from 'trashable';
+import { getNextStateForChangedInput } from '../../utils';
 
 /*
  * Props:
@@ -32,11 +33,7 @@ class EditWord extends Component {
   }
 
   handleInputChange = (event, inputName) => {
-    const nextState = {
-      successText: '',
-      dangerText: '',
-    };
-    nextState[inputName] = event.target.value;
+    const nextState = getNextStateForChangedInput(event, inputName);
     this.setState(nextState);
   }
 

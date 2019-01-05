@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import SharedForm from '../SharedForm/SharedForm';
 import * as api from '../../api';
 import makeTrashable from 'trashable';
-import { getCustomErrorMessage } from '../../utils';
+import { getCustomErrorMessage, getNextStateForChangedInput } from '../../utils';
 
 class NewWord extends Component {
   state = {
@@ -21,11 +21,7 @@ class NewWord extends Component {
   }
 
   handleInputChange = (event, inputName) => {
-    const nextState = {
-      successText: '',
-      dangerText: '',
-    };
-    nextState[inputName] = event.target.value;
+    const nextState = getNextStateForChangedInput(event, inputName);
     this.setState(nextState);
   }
 

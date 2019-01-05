@@ -81,3 +81,16 @@ export const getCustomErrorMessage = error => {
   }
   return '';
 };
+
+////////////////////////////////////////////////////////////////////////////////
+/// Helper: next state for a changed input
+////////////////////////////////////////////////////////////////////////////////
+
+export const getNextStateForChangedInput = (event, inputName) => {
+  const nextState = {
+    successText: '',
+    dangerText: ''
+  };
+  nextState[inputName] = event.target.value;
+  return nextState;
+};

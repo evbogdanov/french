@@ -3,7 +3,7 @@ import SharedForm from '../SharedForm/SharedForm';
 import AddRelatedWords from '../AddRelatedWords/AddRelatedWords';
 import * as api from '../../api';
 import makeTrashable from 'trashable';
-import { getCustomErrorMessage } from '../../utils';
+import { getCustomErrorMessage, getNextStateForChangedInput } from '../../utils';
 
 class NewPhrase extends Component {
   state = {
@@ -27,11 +27,7 @@ class NewPhrase extends Component {
   }
 
   handleInputChange = (event, inputName) => {
-    const nextState = {
-      successText: '',
-      dangerText: '',
-    };
-    nextState[inputName] = event.target.value;
+    const nextState = getNextStateForChangedInput(event, inputName);;
     this.setState(nextState);
   }
 
