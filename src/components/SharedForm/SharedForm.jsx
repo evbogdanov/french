@@ -3,10 +3,12 @@ import Input from '../Input/Input';
 import InputSubmit from '../InputSubmit/InputSubmit';
 import Alert from '../Alert/Alert';
 import FormAlert from '../FormAlert/FormAlert';
-
-const GENDERS = ['f', 'm', ''],
-      PHRASE_TEXT_MAX_LENGTH = 150,
-      WORD_TEXT_MAX_LENGTH = 40;
+import {
+  SHARED_NOTES_MAX_LENGTH,
+  SHARED_IMAGE_MAX_LENGTH
+} from '../../models/shared';
+import { WORD_TEXT_MAX_LENGTH, WORD_GENDERS } from '../../models/word';
+import { PHRASE_TEXT_MAX_LENGTH } from '../../models/phrase';
 
 /*
  * Props:
@@ -17,10 +19,10 @@ const GENDERS = ['f', 'm', ''],
  * - image
  * - notes
  * - gender ("word" model only)
- * 
+ *
  * - handleInputChange
  * - handleSubmit
- * 
+ *
  * - headingText
  * - submitText
  * - loadingText
@@ -49,7 +51,7 @@ const SharedForm = (props) => {
   let inputGender = null;
   if (props.model === 'word') {
     let [isInvalidGender, invalidGenderFeedback] = [false, null];
-    if (!GENDERS.includes(props.gender)) {
+    if (!WORD_GENDERS.includes(props.gender)) {
       isInvalidGender = true;
       invalidGenderFeedback = "Invalid gender! Valid genders are 'f' or 'm'";
     }
@@ -84,7 +86,7 @@ const SharedForm = (props) => {
                id={`${props.model}-notes`}
                label="Notes"
                placeholder="Notes"
-               maxLength="500"
+               maxLength={SHARED_NOTES_MAX_LENGTH}
                value={props.notes}
                handleChange={ev => props.handleInputChange(ev, 'notes')}
                isTextarea="true" />
@@ -93,7 +95,7 @@ const SharedForm = (props) => {
                id={`${props.model}-image`}
                label="Image"
                placeholder="Paste image URL"
-               maxLength="100"
+               maxLength={SHARED_IMAGE_MAX_LENGTH}
                value={props.image}
                handleChange={ev => props.handleInputChange(ev, 'image')} />
         <InputSubmit simple={props.simple}

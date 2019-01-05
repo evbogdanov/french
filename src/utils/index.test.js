@@ -55,7 +55,7 @@ describe('utils', () => {
 
   it('should select properties', () => {
     const obj = { a: 1, b: 2, c: 3 };
-    const sel = selectProps(obj, 'b', 'c', 'd');
+    const sel = selectProps(obj, ['b', 'c', 'd']);
     expect(sel).toEqual({ b: 2, c: 3 });
   });
 });

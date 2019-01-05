@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PHRASE } from '../../models/phrase';
 import SharedForm from '../SharedForm/SharedForm';
 import AddRelatedWords from '../AddRelatedWords/AddRelatedWords';
 import * as api from '../../api';
@@ -6,15 +7,13 @@ import makeTrashable from 'trashable';
 import {
   getCustomErrorMessage,
   getNextStateForChangedInput,
-  selectProps
+  selectPhraseProps
 } from '../../utils';
 
 class NewPhrase extends Component {
   state = {
     // Create phrase
-    text: '',
-    image: '',
-    notes: '',
+    ...PHRASE,
 
     // Add words (after the phrase was created)
     createdId: null,
@@ -44,9 +43,8 @@ class NewPhrase extends Component {
       successText: '',
       dangerText: '',
     });
-    const selectedProps = selectProps(this.state, 'text', 'image', 'notes');
     this.trashableRequest = makeTrashable(
-      api.post('/v1/phrases', selectedProps)
+      api.post('/v1/phrases', selectPhraseProps(this.state))
     );
     this.trashableRequest
       .then(response => {

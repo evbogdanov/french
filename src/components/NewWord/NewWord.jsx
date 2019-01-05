@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
+import { WORD } from '../../models/word';
 import SharedForm from '../SharedForm/SharedForm';
 import * as api from '../../api';
 import makeTrashable from 'trashable';
 import {
   getCustomErrorMessage,
   getNextStateForChangedInput,
-  selectProps
+  selectWordProps
 } from '../../utils';
 
 class NewWord extends Component {
   state = {
-    text: '',
-    image: '',
-    notes: '',
-    gender: '',
-
+    ...WORD,
     loading: false,
     successText: '',
     dangerText: '',
@@ -36,9 +33,8 @@ class NewWord extends Component {
       successText: '',
       dangerText: '',
     });
-    const selectedProps = selectProps(this.state, 'text', 'image', 'notes', 'gender');
     this.trashableRequest = makeTrashable(
-      api.post('/v1/words', selectedProps)
+      api.post('/v1/words', selectWordProps(this.state))
     );
     this.trashableRequest
       .then(() => {

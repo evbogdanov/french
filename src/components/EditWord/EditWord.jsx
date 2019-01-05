@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { WORD_PROPS } from '../../models/word';
 import SharedForm from '../SharedForm/SharedForm';
 import FormDeleteAndCancel from '../FormDeleteAndCancel/FormDeleteAndCancel';
 import * as api from '../../api';
 import * as actions from '../../store/actions';
 import makeTrashable from 'trashable';
-import { getNextStateForChangedInput, selectProps } from '../../utils';
+import { getNextStateForChangedInput, selectWordProps } from '../../utils';
 
 /*
  * Props:
@@ -13,18 +14,24 @@ import { getNextStateForChangedInput, selectProps } from '../../utils';
  * - cancelEditing
  */
 class EditWord extends Component {
-  state = {
-    text: this.props.word.text,
-    image: this.props.word.image,
-    notes: this.props.word.notes,
-    gender: this.props.word.gender,
+  constructor(props) {
+    super(props);
 
-    loading: false,
-    successText: '',
-    dangerText: '',
+    const word = {};
+    for (const prop of WORD_PROPS) {
+      word[prop] = this.props.word[prop];
+    }
 
-    loadingDelete: false,
-    dangerTextDelete: '',
+    this.state = {
+      ...word,
+
+      loading: false,
+      successText: '',
+      dangerText: '',
+
+      loadingDelete: false,
+      dangerTextDelete: '',
+    }
   }
 
   componentWillUnmount() {
@@ -44,9 +51,8 @@ class EditWord extends Component {
       successText: '',
       dangerText: '',
     });
-    const selectedProps = selectProps(this.state, 'text', 'image', 'notes', 'gender');
     this.trashableRequestEdit = makeTrashable(
-      api.put(`/v1/words/${this.props.word.id}`, selectedProps)
+      api.put(`/v1/words/${this.props.word.id}`, selectWordProps(this.state))
     );
     this.trashableRequestEdit
       .then(() => {

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { PHRASE_PROPS } from '../../models/phrase';
 import SharedForm from '../SharedForm/SharedForm';
 import FormDeleteAndCancel from '../FormDeleteAndCancel/FormDeleteAndCancel';
 import EditRelatedWords from '../EditRelatedWords/EditRelatedWords';
 import * as api from '../../api';
 import * as actions from '../../store/actions';
 import makeTrashable from 'trashable';
-import { getNextStateForChangedInput, selectProps } from '../../utils';
+import { getNextStateForChangedInput, selectPhraseProps } from '../../utils';
 
 /*
  * Props:
@@ -14,19 +15,27 @@ import { getNextStateForChangedInput, selectProps } from '../../utils';
  * - cancelEditing
  */
 class EditPhrase extends Component {
-  state = {
-    text: this.props.phrase.text,
-    image: this.props.phrase.image,
-    notes: this.props.phrase.notes,
+  constructor(props) {
+    super(props);
 
-    loading: false,
-    successText: '',
-    dangerText: '',
+    const phrase = {};
+    for (const prop of PHRASE_PROPS) {
+      phrase[prop] = this.props.phrase[prop];
+    }
 
-    loadingDelete: false,
-    dangerTextDelete: '',
+    this.state = {
+      ...phrase,
 
-    suggestionsText: '',
+      loading: false,
+      successText: '',
+      dangerText: '',
+
+      loadingDelete: false,
+      dangerTextDelete: '',
+
+      // Suggest related words
+      suggestionsText: '',
+    }
   }
 
   componentWillUnmount() {
@@ -48,9 +57,8 @@ class EditPhrase extends Component {
       successText: '',
       dangerText: '',
     });
-    const selectedProps = selectProps(this.state, 'text', 'image', 'notes');
     this.trashableRequestEdit = makeTrashable(
-      api.put(`/v1/phrases/${this.props.phrase.id}`, selectedProps)
+      api.put(`/v1/phrases/${this.props.phrase.id}`, selectPhraseProps(this.state))
     );
     this.trashableRequestEdit
       .then(() => {

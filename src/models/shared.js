@@ -1,0 +1,3 @@
+export const SHARED_NOTES_MAX_LENGTH = 500;
+
+export const SHARED_IMAGE_MAX_LENGTH = 100;

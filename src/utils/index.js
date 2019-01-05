@@ -1,3 +1,6 @@
+import { WORD_PROPS } from '../models/word';
+import { PHRASE_PROPS } from '../models/phrase';
+
 ////////////////////////////////////////////////////////////////////////////////
 /// Convert days ago to time ago
 ////////////////////////////////////////////////////////////////////////////////
@@ -99,10 +102,13 @@ export const getNextStateForChangedInput = (event, inputName) => {
 /// Get slice of properties from a given object
 ////////////////////////////////////////////////////////////////////////////////
 
-export const selectProps = (obj, ...props) => {
+export const selectProps = (obj, props) => {
   const selected = {};
   for (const prop of props) {
     if (obj.hasOwnProperty(prop)) selected[prop] = obj[prop];
   }
   return selected;
 };
+
+export const selectWordProps = obj => selectProps(obj, WORD_PROPS);
+export const selectPhraseProps = obj => selectProps(obj, PHRASE_PROPS);
