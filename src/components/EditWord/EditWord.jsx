@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { WORD_PROPS } from '../../models/word';
 import SharedForm from '../SharedForm/SharedForm';
 import FormDeleteAndCancel from '../FormDeleteAndCancel/FormDeleteAndCancel';
 import * as api from '../../api';
@@ -17,11 +16,7 @@ class EditWord extends Component {
   constructor(props) {
     super(props);
 
-    const word = {};
-    for (const prop of WORD_PROPS) {
-      word[prop] = this.props.word[prop];
-    }
-
+    const word = selectWordProps(this.props.word);
     this.state = {
       ...word,
 

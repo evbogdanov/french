@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { PHRASE_PROPS } from '../../models/phrase';
 import SharedForm from '../SharedForm/SharedForm';
 import FormDeleteAndCancel from '../FormDeleteAndCancel/FormDeleteAndCancel';
 import EditRelatedWords from '../EditRelatedWords/EditRelatedWords';
@@ -18,11 +17,7 @@ class EditPhrase extends Component {
   constructor(props) {
     super(props);
 
-    const phrase = {};
-    for (const prop of PHRASE_PROPS) {
-      phrase[prop] = this.props.phrase[prop];
-    }
-
+    const phrase = selectPhraseProps(this.props.phrase);
     this.state = {
       ...phrase,
 
