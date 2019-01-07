@@ -4,9 +4,9 @@ import Heading from '../Heading/Heading';
 import Secret from '../Secret/Secret';
 import NewWord from '../NewWord/NewWord';
 import NewPhrase from '../NewPhrase/NewPhrase';
-import * as actions from '../../store/actions';
+import { setAuthenticated, unsetAuthenticated } from '../../store/actions';
 
-const Admin = (props) => {
+const Admin = props => {
   let [user, newWord, newPhrase] = ['guest', null, null];
   if (props.isAuthenticated) {
     user = 'admin';
@@ -17,8 +17,10 @@ const Admin = (props) => {
   return (
     <>
       <Heading>Hello, {user}</Heading>
-      <Secret setAuthenticated={props.setAuthenticated}
-              unsetAuthenticated={props.unsetAuthenticated} />
+      <Secret
+        setAuthenticated={props.setAuthenticated}
+        unsetAuthenticated={props.unsetAuthenticated}
+      />
       {newWord}
       {newPhrase}
     </>
@@ -33,8 +35,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setAuthenticated: () => dispatch({type: actions.SET_AUTHENTICATED}),
-    unsetAuthenticated: () => dispatch({type: actions.UNSET_AUTHENTICATED})
+    setAuthenticated: () => dispatch(setAuthenticated()),
+    unsetAuthenticated: () => dispatch(unsetAuthenticated())
   };
 };
 
@@ -42,5 +44,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
   null,
-  {pure: false}
+  { pure: false }
 )(Admin);

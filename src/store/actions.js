@@ -13,3 +13,15 @@ export const ADD_RELATED_WORD = 'ADD_RELATED_WORD';
 export const REMOVE_RELATED_WORD = 'REMOVE_RELATED_WORD';
 
 export const SET_SEARCH_PHRASES_TEXT = 'SET_SEARCH_PHRASES_TEXT';
+
+////////////////////////////////////////////////////////////////////////////////
+/// Action creators
+////////////////////////////////////////////////////////////////////////////////
+
+export const setAuthenticated = () => ({
+  type: SET_AUTHENTICATED
+});
+
+export const unsetAuthenticated = () => ({
+  type: UNSET_AUTHENTICATED
+});
