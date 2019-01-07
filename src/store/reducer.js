@@ -38,12 +38,13 @@ const setWords = (state, action) => ({
 });
 
 const editWord = (state, action) => {
+  const word = action.data.word;
   const words = state.words.map(w => {
-    if (w.id === action.data.id) {
-      w.text = action.data.text;
-      w.image = action.data.image;
-      w.notes = action.data.notes;
-      w.gender = action.data.gender;
+    if (w.id === word.id) {
+      w.text = word.text;
+      w.image = word.image;
+      w.notes = word.notes;
+      w.gender = word.gender;
     }
     return w;
   });

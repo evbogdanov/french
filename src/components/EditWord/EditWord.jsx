@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import SharedForm from '../SharedForm/SharedForm';
 import FormDeleteAndCancel from '../FormDeleteAndCancel/FormDeleteAndCancel';
 import * as api from '../../api';
-import * as actions from '../../store/actions';
+import { editWord, deleteWord } from '../../store/actions';
 import makeTrashable from 'trashable';
 import { getNextStateForChangedInput, selectWordProps } from '../../utils';
 
@@ -25,8 +25,8 @@ class EditWord extends Component {
       dangerText: '',
 
       loadingDelete: false,
-      dangerTextDelete: '',
-    }
+      dangerTextDelete: ''
+    };
   }
 
   componentWillUnmount() {
@@ -37,43 +37,43 @@ class EditWord extends Component {
   handleInputChange = (event, inputName) => {
     const nextState = getNextStateForChangedInput(event, inputName);
     this.setState(nextState);
-  }
+  };
 
-  handleSubmitEdit = (event) => {
+  handleSubmitEdit = event => {
     event.preventDefault();
     this.setState({
       loading: true,
       successText: '',
-      dangerText: '',
+      dangerText: ''
     });
     this.trashableRequestEdit = makeTrashable(
       api.put(`/v1/words/${this.props.word.id}`, selectWordProps(this.state))
     );
     this.trashableRequestEdit
       .then(() => {
-        this.props.editWord(
-          this.props.word.id,
-          this.state.text,
-          this.state.image,
-          this.state.notes,
-          this.state.gender,
-        );
+        this.props.editWord({
+          id: this.props.word.id,
+          text: this.state.text,
+          image: this.state.image,
+          notes: this.state.notes,
+          gender: this.state.gender
+        });
         this.props.cancelEditing();
       })
       .catch(error => {
         console.log(error);
         this.setState({
           loading: false,
-          dangerText: 'Server error',
+          dangerText: 'Server error'
         });
       });
-  }
+  };
 
-  handleSubmitDelete = (event) => {
+  handleSubmitDelete = event => {
     event.preventDefault();
     this.setState({
       loadingDelete: true,
-      dangerTextDelete: '',
+      dangerTextDelete: ''
     });
     this.trashableRequestDelete = makeTrashable(
       api.del(`/v1/words/${this.props.word.id}`)
@@ -89,30 +89,34 @@ class EditWord extends Component {
           dangerTextDelete: "Couldn't delete"
         });
       });
-  }
+  };
 
   render() {
     return (
       <>
-        <SharedForm simple={true}
-                    model="word"
-                    text={this.state.text}
-                    image={this.state.image}
-                    notes={this.state.notes}
-                    gender={this.state.gender}
-                    handleInputChange={this.handleInputChange}
-                    handleSubmit={this.handleSubmitEdit}
-                    headingText={null}
-                    submitText="Save"
-                    loadingText="Saving"
-                    loading={this.state.loading}
-                    successText={this.state.successText}
-                    dangerText={this.state.dangerText} />
-        <FormDeleteAndCancel handleSubmit={this.handleSubmitDelete}
-                             dangerText={this.state.dangerTextDelete}
-                             loading={this.state.loadingDelete}
-                             cancelEditing={this.props.cancelEditing}
-                             cancelText="Back to word" />
+        <SharedForm
+          simple={true}
+          model="word"
+          text={this.state.text}
+          image={this.state.image}
+          notes={this.state.notes}
+          gender={this.state.gender}
+          handleInputChange={this.handleInputChange}
+          handleSubmit={this.handleSubmitEdit}
+          headingText={null}
+          submitText="Save"
+          loadingText="Saving"
+          loading={this.state.loading}
+          successText={this.state.successText}
+          dangerText={this.state.dangerText}
+        />
+        <FormDeleteAndCancel
+          handleSubmit={this.handleSubmitDelete}
+          dangerText={this.state.dangerTextDelete}
+          loading={this.state.loadingDelete}
+          cancelEditing={this.props.cancelEditing}
+          cancelText="Back to word"
+        />
       </>
     );
   }
@@ -120,14 +124,8 @@ class EditWord extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    editWord: (id, text, image, notes, gender) => dispatch({
-      type: actions.EDIT_WORD,
-      data: {id, text, image, notes, gender}
-    }),
-    deleteWordById: id => dispatch({
-      type: actions.DELETE_WORD,
-      data: {id}
-    })
+    editWord: word => dispatch(editWord(word)),
+    deleteWordById: id => dispatch(deleteWord(id))
   };
 };
 
@@ -135,5 +133,5 @@ export default connect(
   null,
   mapDispatchToProps,
   null,
-  {pure: false}
+  { pure: false }
 )(EditWord);

@@ -25,3 +25,20 @@ export const setAuthenticated = () => ({
 export const unsetAuthenticated = () => ({
   type: UNSET_AUTHENTICATED
 });
+
+export const setWords = words => ({
+  type: SET_WORDS,
+  data: { words }
+});
+
+export const editWord = word => ({
+  type: EDIT_WORD,
+  data: { word }
+});
+
+export const deleteWord = id => ({
+  type: DELETE_WORD,
+  data: { id }
+});
+
+// TODO: action creators for phrases

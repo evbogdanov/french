@@ -55,7 +55,7 @@ describe('reducer', () => {
     };
     expect(reducer(
       state,
-      {type: actions.EDIT_WORD, data: {...word}}
+      {type: actions.EDIT_WORD, data: {word}}
     ).words).toEqual(wordsAfter);
   });
 
