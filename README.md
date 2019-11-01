@@ -1,7 +1,5 @@
 # french
 
-<https://french.evbogdanov.com/about>
-
 ## Development
 
 ```
